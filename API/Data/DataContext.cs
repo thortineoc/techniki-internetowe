@@ -1,3 +1,4 @@
+using api.Models;
 using Microsoft.EntityFrameworkCore;
 using API.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -9,6 +10,9 @@ namespace API.Data
         IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>,
         IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
+        public DbSet<Place> Places { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
+
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 
