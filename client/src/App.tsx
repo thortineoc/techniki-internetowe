@@ -1,12 +1,10 @@
-import React from 'react';
-import './App.scss';
+import './App.scss'
 
 function App() {
   return (
     <div className="App">
       <h1>Polecajka</h1>
     </div>
-  );
+  )
 }
-
-export default App;
+export default App
