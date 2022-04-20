@@ -1,0 +1,11 @@
+@import '../../Styles/Colors.scss';
+
+.Homepage {
+    background-color: $homepage__gray;
+    width: 100%;
+    height: 700px;
+    background-image: url('./location.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+}

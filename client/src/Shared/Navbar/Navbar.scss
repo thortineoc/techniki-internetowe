@@ -1,0 +1,15 @@
+@import "../../Styles/Colors";
+
+.navbar {
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  padding: 1rem 0 1rem 0;
+  position: sticky;
+  z-index: 100;
+  width: 100%;
+  top: 0;
+  background-color: $toolbar__orange;
+  color: #fff;
+  justify-content: space-between;
+}

@@ -1,9 +1,11 @@
-import './App.scss'
+import Homepage from './Pages/Homepage/Homepage'
+import Navbar from './Shared/Navbar/Navbar'
 
 function App() {
   return (
-    <div className="App">
-      <h1>Polecajka</h1>
+    <div>
+      <Navbar />
+      <Homepage />
     </div>
   )
 }
