@@ -1,11 +1,24 @@
 @import '../../Styles/Colors.scss';
 
-.Homepage {
+.homepage {
     background-color: $homepage__gray;
-    width: 100%;
-    height: 700px;
+    min-height: 659px;
     background-image: url('./location.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: right;
+
+    .homepage-textbox {
+        padding: 100px 0 0 100px;
+        max-width: 800px;
+        font-size: 1.5rem;
+        line-height: 3rem;
+        color: rgb(39, 39, 39);
+
+        .homepage-title {
+            margin: 0;
+            padding-bottom: 20px;
+            color: white
+        }
+    }
 }
