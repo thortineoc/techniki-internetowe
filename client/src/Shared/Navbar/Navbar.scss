@@ -29,4 +29,11 @@
       margin-bottom: -10px;
     }
   }
+
+  .navbar-btn-group {
+    min-width: 200px;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 30px;
+  }
 }
