@@ -4,6 +4,7 @@ import * as Yup from 'yup'
 import TextFieldWrapper from '../../../Shared/TextFieldWrapper/TextFieldWrapper'
 import { Button } from '@material-ui/core'
 import './RegistrationForm.scss'
+import axios from 'axios'
 
 interface IRegistrationFormFields {
   username: string
@@ -38,23 +39,20 @@ const validationSchema = Yup.object({
 function RegistrationForm(): ReactElement {
   const onSubmit = (
     values: { username: string; email: string; password: string },
-    { resetForm }: any
+    { resetForm, setStatus, setSubmitting, setError }: any
   ) => {
     console.log(JSON.stringify(values))
-    /*
     axios
       .post('https://localhost:5001/api/account/register', values)
-      .then(function (response) {
+      .then(function (response: any) {
         console.log(response)
-        setIsSuccess(true)
       })
-      .catch(function (error) {
+      .catch(function (error: any) {
         setStatus({ success: false })
         setSubmitting(false)
         setError(error?.response?.data)
         console.log(error)
-        setIsError(true)
-      })*/
+      })
     resetForm()
   }
 

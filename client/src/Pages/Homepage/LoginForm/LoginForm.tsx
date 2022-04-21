@@ -3,8 +3,10 @@ import axios from 'axios'
 import { Formik, Form, FormikProps } from 'formik'
 import React, { ReactElement, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import * as Yup from 'yup'
 import TextFieldWrapper from '../../../Shared/TextFieldWrapper/TextFieldWrapper'
+import { actionCreators } from '../../../store'
 import './LoginForm.scss'
 
 interface ILoginFormFields {
@@ -25,6 +27,7 @@ const validationSchema = Yup.object({
 function LoginForm(): ReactElement {
   const dispatch = useDispatch()
   const history: any = useHistory()
+  const { login, setLoginModal } = bindActionCreators(actionCreators, dispatch)
 
   const onSubmit: (values: ILoginFormFields, { resetForm }: any) => void = (
     values: ILoginFormFields,
@@ -36,7 +39,8 @@ function LoginForm(): ReactElement {
       .post('https://localhost:5001/api/account/login', values)
       .then(function (response) {
         console.log(response)
-        dispatch(login(response.data))
+        login(response.data)
+        setLoginModal(false)
         setTimeout(() => {
           history.push('/map')
         }, 1000)
