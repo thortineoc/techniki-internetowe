@@ -1,9 +1,16 @@
-import { Formik, Form } from 'formik'
+import { Formik, Form, FormikProps } from 'formik'
 import React, { ReactElement } from 'react'
 import * as Yup from 'yup'
 import TextFieldWrapper from '../../../Shared/TextFieldWrapper/TextFieldWrapper'
 import { Button } from '@material-ui/core'
 import './RegistrationForm.scss'
+
+interface IRegistrationFormFields {
+  username: string
+  password: string
+  email: string
+  confirmPassword: string
+}
 
 const initialValues = {
   username: '',
@@ -58,7 +65,7 @@ function RegistrationForm(): ReactElement {
         validationSchema={validationSchema}
         validateOnChange={false}
         onSubmit={onSubmit}>
-        {(formik: any) => {
+        {(formik: FormikProps<IRegistrationFormFields>) => {
           return (
             <Form>
               <div className="RegistrationForm-form">

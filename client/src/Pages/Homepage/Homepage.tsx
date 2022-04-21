@@ -4,6 +4,7 @@ import Modal from '../../Shared/Modal/Modal'
 import { actionCreators } from '../../store'
 import { IStore } from '../../store/store'
 import './Homepage.scss'
+import LoginForm from './LoginForm/LoginForm'
 import RegistrationForm from './RegistrationForm/RegistrationForm'
 
 function Homepage() {
@@ -30,7 +31,7 @@ function Homepage() {
         </div>
       </div>
       <Modal isOpen={showLoginModal} setIsOpen={setLoginModal}>
-        <h1>Login</h1>
+        <LoginForm></LoginForm>
       </Modal>
       <Modal isOpen={showRegistrationModal} setIsOpen={setRegistrationModal}>
         <RegistrationForm></RegistrationForm>
