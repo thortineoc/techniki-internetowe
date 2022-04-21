@@ -1,10 +1,13 @@
-import { Button } from '@material-ui/core'
-import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import Modal from '../../Shared/Modal/Modal'
+import { IStore } from '../../store/store'
 import './Homepage.scss'
 
 function Homepage() {
-  const [isOpen, setIsOpen] = useState(false)
+  const showLoginModal = useSelector(
+    (state: IStore) => state.showModalReducer.showLoginModal
+  )
+  console.log(showLoginModal)
 
   return (
     <div>
@@ -19,9 +22,7 @@ function Homepage() {
           </div>
         </div>
       </div>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-        :))))
-      </Modal>
+      <Modal isOpen={showLoginModal}>Login</Modal>
     </div>
   )
 }
