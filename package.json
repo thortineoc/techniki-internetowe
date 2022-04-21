@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "axios": "^0.26.1",
+    "formik": "^2.2.9",
+    "react-router-dom": "^6.3.0",
+    "redux-thunk": "^2.4.1",
+    "yup": "^0.32.11"
+  }
+}

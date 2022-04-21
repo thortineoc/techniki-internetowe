@@ -4,6 +4,7 @@ import Modal from '../../Shared/Modal/Modal'
 import { actionCreators } from '../../store'
 import { IStore } from '../../store/store'
 import './Homepage.scss'
+import RegistrationForm from './RegistrationForm/RegistrationForm'
 
 function Homepage() {
   const { showLoginModal, showRegistrationModal } = useSelector(
@@ -32,7 +33,7 @@ function Homepage() {
         <h1>Login</h1>
       </Modal>
       <Modal isOpen={showRegistrationModal} setIsOpen={setRegistrationModal}>
-        <h1>Register</h1>
+        <RegistrationForm></RegistrationForm>
       </Modal>
     </div>
   )

@@ -3,7 +3,8 @@ import { Dialog, DialogContent, makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   dialogWrapper: {
-    width: 540,
+    width: 400,
+    height: 500,
     padding: theme.spacing(2)
   }
 }))
