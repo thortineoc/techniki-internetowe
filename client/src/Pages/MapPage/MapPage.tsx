@@ -1,7 +1,7 @@
 import React from 'react'
 
-function Map() {
+function MapPage() {
   return <div>You logged in!</div>
 }
 
-export default Map
+export default MapPage

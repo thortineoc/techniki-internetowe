@@ -1,14 +1,15 @@
-import Homepage from './Pages/Homepage/Homepage'
+import { BrowserRouter } from 'react-router-dom'
+import MainRouter from './Routers/MainRouter'
 import Footer from './Shared/Footer/Footer'
 import Navbar from './Shared/Navbar/Navbar'
 
 function App() {
   return (
-    <div>
+    <BrowserRouter>
       <Navbar />
-      <Homepage />
+      <MainRouter />
       <Footer />
-    </div>
+    </BrowserRouter>
   )
 }
 export default App

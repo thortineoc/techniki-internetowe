@@ -1,13 +1,14 @@
 import { Button } from '@material-ui/core'
 import axios from 'axios'
 import { Formik, Form, FormikProps } from 'formik'
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement } from 'react'
 import { useDispatch } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Yup from 'yup'
 import TextFieldWrapper from '../../../Shared/TextFieldWrapper/TextFieldWrapper'
 import { actionCreators } from '../../../store'
 import './LoginForm.scss'
+import { useNavigate } from 'react-router-dom'
 
 interface ILoginFormFields {
   username: string
@@ -26,7 +27,7 @@ const validationSchema = Yup.object({
 
 function LoginForm(): ReactElement {
   const dispatch = useDispatch()
-  const history: any = useHistory()
+  const navigate = useNavigate()
   const { login, setLoginModal } = bindActionCreators(actionCreators, dispatch)
 
   const onSubmit: (values: ILoginFormFields, { resetForm }: any) => void = (
@@ -41,9 +42,10 @@ function LoginForm(): ReactElement {
         console.log(response)
         login(response.data)
         setLoginModal(false)
+
         setTimeout(() => {
-          history.push('/map')
-        }, 1000)
+          navigate('/map')
+        }, 0)
       })
       .catch(function (error) {
         setStatus({ success: false })
@@ -104,6 +106,3 @@ function LoginForm(): ReactElement {
 }
 
 export default LoginForm
-function useHistory() {
-  throw new Error('Function not implemented.')
-}
