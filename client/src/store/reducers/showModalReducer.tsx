@@ -1,14 +1,11 @@
+import { IShowModalAction } from '../interfaces'
+
 export const initialState = {
   showLoginModal: false,
   showRegistrationModal: false
 }
 
-export interface showModalAction {
-  type: 'showLoginModal' | 'showRegistrationModal'
-  payload: boolean
-}
-
-const showModalReducer = (state = initialState, action: showModalAction) => {
+const showModalReducer = (state = initialState, action: IShowModalAction) => {
   switch (action.type) {
     case 'showLoginModal':
       return {

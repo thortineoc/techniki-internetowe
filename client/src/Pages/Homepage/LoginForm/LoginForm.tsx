@@ -23,22 +23,22 @@ const validationSchema = Yup.object({
 })
 
 function LoginForm(): ReactElement {
-  //const dispatch = useDispatch()
+  const dispatch = useDispatch()
+  const history: any = useHistory()
 
   const onSubmit: (values: ILoginFormFields, { resetForm }: any) => void = (
     values: ILoginFormFields,
-    { resetForm }: any
+    { resetForm, setStatus, setSubmitting, setError }: any
   ) => {
     console.log(resetForm)
     console.log(JSON.stringify(values))
-    /*
     axios
       .post('https://localhost:5001/api/account/login', values)
       .then(function (response) {
         console.log(response)
         dispatch(login(response.data))
         setTimeout(() => {
-          history.push('/')
+          history.push('/map')
         }, 1000)
       })
       .catch(function (error) {
@@ -50,8 +50,7 @@ function LoginForm(): ReactElement {
         } else {
           setError(error.response.data)
         }
-        setIsError(true)
-      })*/
+      })
     resetForm()
   }
 
@@ -101,3 +100,6 @@ function LoginForm(): ReactElement {
 }
 
 export default LoginForm
+function useHistory() {
+  throw new Error('Function not implemented.')
+}
