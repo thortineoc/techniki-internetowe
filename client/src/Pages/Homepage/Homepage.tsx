@@ -1,5 +1,7 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import Modal from '../../Shared/Modal/Modal'
+import { actionCreators } from '../../store'
 import { IStore } from '../../store/store'
 import './Homepage.scss'
 
@@ -7,7 +9,8 @@ function Homepage() {
   const showLoginModal = useSelector(
     (state: IStore) => state.showModalReducer.showLoginModal
   )
-  console.log(showLoginModal)
+  const dispatch = useDispatch()
+  const { setLoginModal } = bindActionCreators(actionCreators, dispatch)
 
   return (
     <div>
@@ -22,7 +25,9 @@ function Homepage() {
           </div>
         </div>
       </div>
-      <Modal isOpen={showLoginModal}>Login</Modal>
+      <Modal isOpen={showLoginModal} setIsOpen={setLoginModal}>
+        Login
+      </Modal>
     </div>
   )
 }

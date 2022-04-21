@@ -5,7 +5,7 @@ function Footer(): ReactElement {
   return (
     <div className="footer">
       <span className="footer-text">
-        2022 © Angelika Kubicka, Michał Stadryniak, Mateusz Mulak
+        2022 © Angelika Kubicka | Michał Stadryniak | Mateusz Mulak
       </span>
     </div>
   )

@@ -3,14 +3,9 @@ export const initialState = {
   showRegistrationModal: false
 }
 
-interface showModalAction {
-  type:
-    | 'showLoginModal'
-    | 'hideLoginModal'
-    | 'showRegistrationModal'
-    | 'hideRegistrationModal'
-  showLoginModal: boolean
-  showRegistrationModal: boolean
+export interface showModalAction {
+  type: 'showLoginModal' | 'showRegistrationModal'
+  payload: boolean
 }
 
 const showModalReducer = (state = initialState, action: showModalAction) => {
@@ -18,22 +13,12 @@ const showModalReducer = (state = initialState, action: showModalAction) => {
     case 'showLoginModal':
       return {
         ...state,
-        showLoginModal: true
-      }
-    case 'hideLoginModal':
-      return {
-        ...state,
-        showLoginModal: false
+        showLoginModal: action.payload
       }
     case 'showRegistrationModal':
       return {
         ...state,
-        showRegistrationModal: true
-      }
-    case 'hideRegistrationModal':
-      return {
-        ...state,
-        showRegistrationModal: false
+        showRegistrationModal: action.payload
       }
     default:
       return state

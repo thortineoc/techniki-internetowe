@@ -11,16 +11,18 @@ const useStyles = makeStyles((theme) => ({
 interface Props {
   children: React.ReactNode
   isOpen: boolean
-  //setIsOpen: (value: boolean) => void
+  setIsOpen: (value: boolean) => void
 }
 
-const Modal = ({ children, isOpen }: Props) => {
+const Modal = ({ children, isOpen, setIsOpen }: Props) => {
   const classes = useStyles()
 
   return (
     <Dialog
       open={isOpen}
-      //onClose={() => setIsOpen(false)}
+      onClose={() => {
+        setIsOpen(false)
+      }}
       classes={{ paper: classes.dialogWrapper }}>
       <DialogContent>{children}</DialogContent>
     </Dialog>
