@@ -7,7 +7,10 @@ import './Navbar.scss'
 
 export default function Navbar() {
   const dispatch = useDispatch()
-  const { setLoginModal } = bindActionCreators(actionCreators, dispatch)
+  const { setLoginModal, setRegistrationModal } = bindActionCreators(
+    actionCreators,
+    dispatch
+  )
 
   return (
     <div className="navbar">
@@ -21,7 +24,9 @@ export default function Navbar() {
         <Button variant="contained" onClick={() => setLoginModal(true)}>
           Login
         </Button>
-        <Button variant="contained">Register</Button>
+        <Button variant="contained" onClick={() => setRegistrationModal(true)}>
+          Register
+        </Button>
       </div>
     </div>
   )

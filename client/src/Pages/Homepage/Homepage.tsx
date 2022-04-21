@@ -6,11 +6,14 @@ import { IStore } from '../../store/store'
 import './Homepage.scss'
 
 function Homepage() {
-  const showLoginModal = useSelector(
-    (state: IStore) => state.showModalReducer.showLoginModal
+  const { showLoginModal, showRegistrationModal } = useSelector(
+    (state: IStore) => state.showModalReducer
   )
   const dispatch = useDispatch()
-  const { setLoginModal } = bindActionCreators(actionCreators, dispatch)
+  const { setLoginModal, setRegistrationModal } = bindActionCreators(
+    actionCreators,
+    dispatch
+  )
 
   return (
     <div>
@@ -26,7 +29,10 @@ function Homepage() {
         </div>
       </div>
       <Modal isOpen={showLoginModal} setIsOpen={setLoginModal}>
-        Login
+        <h1>Login</h1>
+      </Modal>
+      <Modal isOpen={showRegistrationModal} setIsOpen={setRegistrationModal}>
+        <h1>Register</h1>
       </Modal>
     </div>
   )
