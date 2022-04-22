@@ -42,10 +42,7 @@ function LoginForm(): ReactElement {
         console.log(response)
         login(response.data)
         setLoginModal(false)
-
-        setTimeout(() => {
-          navigate('/map')
-        }, 0)
+        navigate('/map')
       })
       .catch(function (error) {
         setStatus({ success: false })
