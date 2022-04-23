@@ -1,0 +1,43 @@
+@import "../../Styles/Colors";
+
+.navbar {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  padding: 1rem 0 1rem 0;
+  position: sticky;
+  z-index: 100;
+  width: 100%;
+  top: 0;
+  background-color: $toolbar__blue;
+  color: #fff;
+  justify-content: space-between;
+
+  .navbar-icons {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .navbar-hands-icon {
+      font-size: 2rem;
+      margin-top: -10px;    
+    }
+
+    .navbar-star-icon {
+      margin-bottom: -10px;
+    }
+  }
+
+  .navbar-btn-group {
+    min-width: 200px;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 30px;
+  }
+
+  .navbar-logout-btn {
+    margin-right: 30px;
+  }
+}

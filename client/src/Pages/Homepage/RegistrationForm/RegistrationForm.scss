@@ -1,0 +1,17 @@
+
+.RegistrationForm-form-and-btn-wrapper {
+        min-height: 370px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-end;
+
+        .RegistrationForm-form-fields {
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+        }
+    }
+

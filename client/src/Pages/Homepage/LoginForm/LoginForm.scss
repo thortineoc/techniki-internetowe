@@ -1,0 +1,17 @@
+
+.LoginForm-form-and-btn-wrapper {
+        min-height: 370px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-end;
+
+        .LoginForm-form-fields {
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+        }
+    }
+
