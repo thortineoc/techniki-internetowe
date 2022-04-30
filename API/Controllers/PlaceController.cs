@@ -45,7 +45,8 @@ namespace API.Controllers
             {
                 Location = placeDto.Location,
                 Category = placeDto.Category,
-                AppUserId = placeDto.AppUserId
+                AppUserId = placeDto.AppUserId,
+                Name = placeDto.Name
             };
             await _placeRepository.Add(place);
             return Ok();
@@ -74,12 +75,15 @@ namespace API.Controllers
         {
             Place place = new()
             {
+                PlaceId = id,
                 Location = placeDto.Location,
                 Category = placeDto.Category,
+                Name = placeDto.Name
             };
 
             await _placeRepository.Update(place);
             return Ok();
+
         }
 
         [HttpDelete("{id}")]

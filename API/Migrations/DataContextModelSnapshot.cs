@@ -133,7 +133,7 @@ namespace api.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("api.Models.Place", b =>
+            modelBuilder.Entity("API.Models.Place", b =>
                 {
                     b.Property<int>("PlaceId")
                         .ValueGeneratedOnAdd()
@@ -150,6 +150,9 @@ namespace api.Migrations
                     b.Property<string>("Location")
                         .HasColumnType("text");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
                     b.HasKey("PlaceId");
 
                     b.HasIndex("AppUserId");
@@ -157,7 +160,7 @@ namespace api.Migrations
                     b.ToTable("Places");
                 });
 
-            modelBuilder.Entity("api.Models.Rating", b =>
+            modelBuilder.Entity("API.Models.Rating", b =>
                 {
                     b.Property<int>("RatingId")
                         .ValueGeneratedOnAdd()
@@ -290,7 +293,7 @@ namespace api.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("api.Models.Place", b =>
+            modelBuilder.Entity("API.Models.Place", b =>
                 {
                     b.HasOne("API.Models.AppUser", null)
                         .WithMany("Places")
@@ -299,7 +302,7 @@ namespace api.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("api.Models.Rating", b =>
+            modelBuilder.Entity("API.Models.Rating", b =>
                 {
                     b.HasOne("API.Models.AppUser", null)
                         .WithMany("Ratings")
@@ -307,7 +310,7 @@ namespace api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("api.Models.Place", null)
+                    b.HasOne("API.Models.Place", null)
                         .WithMany("Ratings")
                         .HasForeignKey("PlaceId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -364,7 +367,7 @@ namespace api.Migrations
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("api.Models.Place", b =>
+            modelBuilder.Entity("API.Models.Place", b =>
                 {
                     b.Navigation("Ratings");
                 });

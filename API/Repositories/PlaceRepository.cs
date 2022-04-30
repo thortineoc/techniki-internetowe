@@ -50,11 +50,10 @@ namespace API.Repositories
             var itemToUpdate = await _context.Places.FindAsync(place.PlaceId);
             if (itemToUpdate == null)
                 throw new NullReferenceException();
-            // ???
+            
             itemToUpdate.Category = place.Category;
             itemToUpdate.Location = place.Location;
-            itemToUpdate.Ratings = place.Ratings;
-            itemToUpdate.AppUserId = place.AppUserId;
+            itemToUpdate.Name = place.Name;
             await _context.SaveChangesAsync();
         }
     }
