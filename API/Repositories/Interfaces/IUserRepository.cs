@@ -3,7 +3,7 @@ using API.Models;
 using System.Threading.Tasks;
 using API.Dtos;
 
-namespace API.Repositories
+namespace API.Repositories.Interfaces
 {
     public interface IUserRepository
     {

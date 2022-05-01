@@ -5,6 +5,7 @@ using API.Token;
 using Microsoft.EntityFrameworkCore;
 using API.Repositories;
 using API.Helpers;
+using API.Repositories.Interfaces;
 
 namespace API.Extensions
 {
@@ -14,6 +15,8 @@ namespace API.Extensions
         {
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPlaceRepository, PlaceRepository>();
+            services.AddScoped<IRatingRepository, RatingRepository>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddDbContext<DataContext>(opt =>
                 opt.UseNpgsql(config.GetConnectionString("DefaultConnection"))

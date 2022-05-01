@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace api.Models
+namespace API.Models
 {
     public class Place
     {
@@ -9,6 +9,8 @@ namespace api.Models
 
         public string Location { get; set; }
         public string Category { get; set; }
+        
+        public string Name { get; set; }
         public List<Rating> Ratings { get; set; }
     }
 }

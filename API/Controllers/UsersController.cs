@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using API.Repositories;
 using API.Models;
 using API.Dtos;
+using API.Repositories.Interfaces;
 using AutoMapper;
 
 namespace API.Controllers
