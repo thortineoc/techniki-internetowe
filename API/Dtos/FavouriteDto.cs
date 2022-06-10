@@ -1,8 +1,11 @@
-﻿namespace API.Dtos
+﻿using API.Models;
+using API.Dtos;
+
+namespace api.Dtos
 {
     public class FavouriteDto
     {
-        public int UserId { get; set; }
-        public int PlaceId { get; set; }
+        public AppUserDto User;
+        public Place Place;
     }
 }

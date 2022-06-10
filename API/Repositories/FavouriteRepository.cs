@@ -25,7 +25,6 @@ namespace API.Repositories
 
         public async Task<IEnumerable<Favourite>> GetAll()
         {
-            //return await _context.Favourites.;
             return await _context.Favourites.ToListAsync();
         }
 
