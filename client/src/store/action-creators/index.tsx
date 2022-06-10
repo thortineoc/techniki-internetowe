@@ -19,6 +19,15 @@ export const setRegistrationModal = (value: boolean) => {
   }
 }
 
+export const setFormError = (value: string | null) => {
+  return (dispatch: Dispatch<IShowModalAction>) => {
+    dispatch({
+      type: 'setFormError',
+      payload: value
+    })
+  }
+}
+
 export const login = (value: IUser) => {
   return (dispatch: Dispatch<ILoginUserAction>) => {
     dispatch({

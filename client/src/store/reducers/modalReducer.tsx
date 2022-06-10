@@ -2,10 +2,11 @@ import { IShowModalAction } from '../interfaces'
 
 export const initialState = {
   showLoginModal: false,
-  showRegistrationModal: false
+  showRegistrationModal: false,
+  setFormError: null
 }
 
-const showModalReducer = (state = initialState, action: IShowModalAction) => {
+const modalReducer = (state = initialState, action: IShowModalAction) => {
   switch (action.type) {
     case 'showLoginModal':
       return {
@@ -17,9 +18,14 @@ const showModalReducer = (state = initialState, action: IShowModalAction) => {
         ...state,
         showRegistrationModal: action.payload
       }
+    case 'setFormError':
+      return {
+        ...state,
+        setFormError: action.payload
+      }
     default:
       return state
   }
 }
 
-export default showModalReducer
+export default modalReducer

@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import loginModalReducer from './showModalReducer'
+import loginModalReducer from './modalReducer'
 import userReducer from './userReducer'
 
 const reducers = combineReducers({
