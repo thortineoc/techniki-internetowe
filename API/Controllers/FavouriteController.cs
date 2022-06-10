@@ -94,6 +94,7 @@ namespace API.Controllers
         {
             Favourite favs = new()
             {
+                FavouriteId = id,
                 PlaceId = favDto.PlaceId,
                 UserId = favDto.UserId
             };
