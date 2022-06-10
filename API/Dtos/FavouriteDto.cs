@@ -1,8 +1,7 @@
-﻿namespace API.Models
+﻿namespace API.Dtos
 {
-    public class Favourite
+    public class FavouriteDto
     {
-        public int FavouriteId { get; set; }
         public int UserId { get; set; }
         public int PlaceId { get; set; }
     }
