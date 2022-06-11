@@ -23,6 +23,11 @@ namespace API.Repositories
             return await _context.Favourites.FindAsync(id);
         }
 
+        public async Task<IEnumerable<Favourite>> GetUserFavouritesById(int userId)
+        {
+            return await _context.Favourites.Where(f => f.UserId == userId).ToListAsync();
+        }
+
         public async Task<IEnumerable<Favourite>> GetAll()
         {
             return await _context.Favourites.ToListAsync();

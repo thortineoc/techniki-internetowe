@@ -50,6 +50,7 @@ namespace API.Controllers
             var user = await _userRepository.GetUserById(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             var favsDtosTasks = favs.Select(async f => new FavouriteDto()
             {
+                Id = f.FavouriteId,
                 Place = await _placeRepository.GetPlaceById(f.PlaceId),
                 User = new AppUserDto()
                 {
@@ -66,27 +67,32 @@ namespace API.Controllers
             return Ok(dtoList);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<FavouriteDto>> GetFavourite(int id)
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<IEnumerable<FavouriteDto>>> GetFavourite(int userId)
         {
-            var fav = await _favouritesRepository.GetFavouriteById(id);
-            if (fav == null)
+            var favs = await _favouritesRepository.GetUserFavouritesById(userId);
+            if (favs == null)
             {
                 return NotFound();
             }
-            var place = await _placeRepository.GetPlaceById(fav.PlaceId);
-            var user = await _userRepository.GetUserById(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-            var dto = new FavouriteDto()
+            var favsDtoList = new List<FavouriteDto>();
+            foreach (var f in favs)
             {
-                User = new AppUserDto()
+                var place = await _placeRepository.GetPlaceById(f.PlaceId);
+                var user = await _userRepository.GetUserById(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+                favsDtoList.Add(new FavouriteDto()
                 {
-                    Id = user.Id,
-                    UserName = user.UserName,
-                    Email = user.Email
-                },
-                Place = place
-            };
-            return Ok(dto);
+                    Id = f.FavouriteId,
+                    User = new AppUserDto()
+                    {
+                        Id = user.Id,
+                        UserName = user.UserName,
+                        Email = user.Email
+                    },
+                    Place = place
+                });
+            }
+            return Ok(favsDtoList);
         }
 
         [HttpPut("{id}")]

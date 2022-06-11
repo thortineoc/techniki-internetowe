@@ -8,6 +8,8 @@ namespace API.Repositories.Interfaces
     {
         Task<Favourite> GetFavouriteById(int id);
 
+        Task<IEnumerable<Favourite>> GetUserFavouritesById(int userId);
+
         Task<IEnumerable<Favourite>> GetAll();
 
         Task Add(Favourite favourite);
