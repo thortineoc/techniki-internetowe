@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using API.Data;
 using API.Models;
-using API.Models;
-using API.Repositories;
 using API.Repositories.Interfaces;
 
 namespace API.Repositories

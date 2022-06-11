@@ -1,26 +1,10 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using API.Data;
 using System.Threading.Tasks;
 using API.Models;
 using API.Dtos;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
-using System.Text;
-using API.Models;
-using API.Repositories;
-using API.Token;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using API.Repositories;
-using API.Models;
-using API.Dtos;
-using API.Repositories;
 using API.Repositories.Interfaces;
-using AutoMapper;
 
 namespace API.Controllers
 {
