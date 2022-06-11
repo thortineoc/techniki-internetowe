@@ -28,11 +28,14 @@ const validationSchema = Yup.object({
 function LoginForm(): ReactElement {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { login, setLoginModal } = bindActionCreators(actionCreators, dispatch)
+  const { login, setLoginModal, setFormError } = bindActionCreators(
+    actionCreators,
+    dispatch
+  )
 
   const onSubmit: (values: ILoginFormFields, { resetForm }: any) => void = (
     values: ILoginFormFields,
-    { resetForm, setStatus, setSubmitting, setError }: any
+    { resetForm, setStatus, setSubmitting }: any
   ) => {
     console.log(resetForm)
     console.log(JSON.stringify(values))
@@ -49,9 +52,9 @@ function LoginForm(): ReactElement {
         setSubmitting(false)
         console.log(error.response)
         if (error.response.data.title) {
-          setError(error.response.data.title)
+          setFormError(error.response.data.title)
         } else {
-          setError(error.response.data)
+          setFormError('Server error ' + error?.response?.data?.statusCode)
         }
       })
     resetForm()

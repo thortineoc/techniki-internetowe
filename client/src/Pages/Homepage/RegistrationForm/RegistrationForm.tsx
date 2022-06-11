@@ -5,6 +5,9 @@ import TextFieldWrapper from '../../../Shared/TextFieldWrapper/TextFieldWrapper'
 import { Button } from '@material-ui/core'
 import './RegistrationForm.scss'
 import axios from 'axios'
+import { bindActionCreators } from 'redux'
+import { actionCreators } from '../../../store'
+import { useDispatch } from 'react-redux'
 
 interface IRegistrationFormFields {
   username: string
@@ -37,9 +40,12 @@ const validationSchema = Yup.object({
 })
 
 function RegistrationForm(): ReactElement {
+  const dispatch = useDispatch()
+  const { setFormError } = bindActionCreators(actionCreators, dispatch)
+
   const onSubmit = (
     values: { username: string; email: string; password: string },
-    { resetForm, setStatus, setSubmitting, setError }: any
+    { resetForm, setStatus, setSubmitting }: any
   ) => {
     console.log(JSON.stringify(values))
     axios
@@ -50,7 +56,13 @@ function RegistrationForm(): ReactElement {
       .catch(function (error: any) {
         setStatus({ success: false })
         setSubmitting(false)
-        setError(error?.response?.data)
+        if (error.response.data.title) {
+          setFormError(error.response.data.title)
+        } else if (error.response.data) {
+          setFormError(error.response.data)
+        } else {
+          setFormError('Server error ' + error?.response?.data?.statusCode)
+        }
         console.log(error)
       })
     resetForm()
