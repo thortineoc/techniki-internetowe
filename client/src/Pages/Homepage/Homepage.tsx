@@ -9,17 +9,13 @@ import RegistrationForm from './RegistrationForm/RegistrationForm'
 import { Snackbar, Alert } from '@mui/material'
 
 function Homepage() {
-  const { showLoginModal, showRegistrationModal } = useSelector(
-    (state: IStore) => state.showModalReducer
-  )
-  const formError = useSelector(
-    (state: IStore) => state.showModalReducer.setFormError
-  )
+  const { showLoginModal, showRegistrationModal, formError, formSuccess } =
+    useSelector((state: IStore) => state.showModalReducer)
   const dispatch = useDispatch()
-  const { setLoginModal, setRegistrationModal, setFormError } =
+  const { setLoginModal, setRegistrationModal, setFormError, setFormSuccess } =
     bindActionCreators(actionCreators, dispatch)
 
-  const handleClose = (
+  const handleCloseFormError = (
     event?: React.SyntheticEvent | Event,
     reason?: string
   ) => {
@@ -29,7 +25,16 @@ function Homepage() {
     setFormError(null)
   }
 
-  // @ts-ignore
+  const handleCloseFormSuccess = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return
+    }
+    setFormSuccess(null)
+  }
+
   return (
     <div>
       <div className="homepage">
@@ -51,10 +56,25 @@ function Homepage() {
       <Snackbar
         open={!!formError}
         autoHideDuration={6000}
-        onClose={handleClose}
+        onClose={handleCloseFormError}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+        <Alert
+          onClose={handleCloseFormError}
+          severity="error"
+          sx={{ width: '100%' }}>
           {formError}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={!!formSuccess}
+        autoHideDuration={6000}
+        onClose={handleCloseFormSuccess}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+        <Alert
+          onClose={handleCloseFormSuccess}
+          severity="success"
+          sx={{ width: '100%' }}>
+          {formSuccess}
         </Alert>
       </Snackbar>
     </div>

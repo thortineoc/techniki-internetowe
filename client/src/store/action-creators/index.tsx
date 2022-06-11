@@ -1,5 +1,11 @@
 import { Dispatch } from 'react'
-import { ILoginUserAction, IShowModalAction, IUser } from '../interfaces'
+import {
+  IFormError,
+  IFormSuccess,
+  ILoginUserAction,
+  IShowModalAction,
+  IUser
+} from '../interfaces'
 
 export const setLoginModal = (value: boolean) => {
   return (dispatch: Dispatch<IShowModalAction>) => {
@@ -20,9 +26,17 @@ export const setRegistrationModal = (value: boolean) => {
 }
 
 export const setFormError = (value: string | null) => {
-  return (dispatch: Dispatch<IShowModalAction>) => {
+  return (dispatch: Dispatch<IFormError>) => {
     dispatch({
-      type: 'setFormError',
+      type: 'formError',
+      payload: value
+    })
+  }
+}
+export const setFormSuccess = (value: string | null) => {
+  return (dispatch: Dispatch<IFormSuccess>) => {
+    dispatch({
+      type: 'formSuccess',
       payload: value
     })
   }

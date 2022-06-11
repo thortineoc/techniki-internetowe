@@ -2,14 +2,25 @@ export interface IStore {
   showModalReducer: {
     showLoginModal: boolean
     showRegistrationModal: boolean
-    setFormError: string | null
+    formError: string | null
+    formSuccess: string | null
   }
   userReducer: boolean
 }
 
 export interface IShowModalAction {
-  type: 'showLoginModal' | 'showRegistrationModal' | 'setFormError'
+  type: 'showLoginModal' | 'showRegistrationModal' | 'formError' | 'formSuccess'
   payload: boolean | string | null
+}
+
+export interface IFormError {
+  type: 'formError'
+  payload: string | null
+}
+
+export interface IFormSuccess {
+  type: 'formSuccess'
+  payload: string | null
 }
 
 export interface IUser {
