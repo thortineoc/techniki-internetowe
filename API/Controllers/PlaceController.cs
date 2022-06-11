@@ -44,6 +44,8 @@ namespace API.Controllers
             Place place = new()
             {
                 Location = placeDto.Location,
+                Country = placeDto.Country,
+                City = placeDto.City,
                 Category = placeDto.Category,
                 AppUserId = placeDto.AppUserId,
                 Name = placeDto.Name
@@ -76,6 +78,8 @@ namespace API.Controllers
             Place place = new()
             {
                 PlaceId = id,
+                Country = placeDto.Country,
+                City = placeDto.City,
                 Location = placeDto.Location,
                 Category = placeDto.Category,
                 Name = placeDto.Name
