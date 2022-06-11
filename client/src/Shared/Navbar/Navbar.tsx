@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { actionCreators } from '../../store'
 import './Navbar.scss'
+import TopMenu from '../TopMenu/TopMenu'
 
 export default function Navbar() {
   const dispatch = useDispatch()
@@ -17,11 +18,12 @@ export default function Navbar() {
 
   return (
     <div className="navbar">
-      <div>
+      <div className="navbar-row">
         <div className="navbar-icons">
           <span className="navbar-star-icon">⭐</span>
           <span className="navbar-hands-icon">👐</span>
         </div>
+        {user !== null && <TopMenu />}
       </div>
       {user === null ? (
         <div className="navbar-btn-group">
