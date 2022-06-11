@@ -58,6 +58,8 @@ function RegistrationForm(): ReactElement {
         setSubmitting(false)
         if (error.response.data.title) {
           setFormError(error.response.data.title)
+        } else if (error.response.data) {
+          setFormError(error.response.data)
         } else {
           setFormError('Server error ' + error?.response?.data?.statusCode)
         }
