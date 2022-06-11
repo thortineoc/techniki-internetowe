@@ -41,7 +41,8 @@ const validationSchema = Yup.object({
 
 function RegistrationForm(): ReactElement {
   const dispatch = useDispatch()
-  const { setFormError } = bindActionCreators(actionCreators, dispatch)
+  const { setFormError, setFormSuccess, setRegistrationModal } =
+    bindActionCreators(actionCreators, dispatch)
 
   const onSubmit = (
     values: { username: string; email: string; password: string },
@@ -51,6 +52,10 @@ function RegistrationForm(): ReactElement {
     axios
       .post('https://localhost:5001/api/account/register', values)
       .then(function (response: any) {
+        setFormSuccess('Successful registration 👏')
+        setTimeout(() => {
+          setRegistrationModal(false)
+        }, 1000)
         console.log(response)
       })
       .catch(function (error: any) {

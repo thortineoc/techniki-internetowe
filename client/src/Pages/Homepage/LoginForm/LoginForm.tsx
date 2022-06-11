@@ -42,10 +42,12 @@ function LoginForm(): ReactElement {
     axios
       .post('https://localhost:5001/api/account/login', values)
       .then(function (response) {
-        console.log(response)
-        login(response.data)
-        setLoginModal(false)
-        navigate('/map')
+        setTimeout(() => {
+          console.log(response)
+          login(response.data)
+          setLoginModal(false)
+          navigate('/map')
+        }, 1000)
       })
       .catch(function (error) {
         setStatus({ success: false })
@@ -53,6 +55,8 @@ function LoginForm(): ReactElement {
         console.log(error.response)
         if (error.response.data.title) {
           setFormError(error.response.data.title)
+        } else if (error.response.data) {
+          setFormError(error.response.data)
         } else {
           setFormError('Server error ' + error?.response?.data?.statusCode)
         }
