@@ -49,7 +49,7 @@ function Homepage() {
             check them out. Look across many avaliable locations 🥡💈🏀.
           </div>
         </div>
-      <GenericTable dataType={TableTypeHeaders.PublicPlaces}/>
+      <GenericTable dataType={TableTypeHeaders.PublicPlaces} data={[["a", "b"], ["c", "d"]]}/>
       </div>
       <Modal isOpen={showLoginModal} setIsOpen={setLoginModal}>
         <LoginForm />

@@ -4,7 +4,11 @@ import TableCell from '@mui/material/TableCell'
 import React from 'react'
 import TableTypeHeaders from './TableType'
 
-function TabHeader(headerType:any) {
+interface Props {
+  headerType: TableTypeHeaders
+}
+
+function TabHeader({headerType}:Props) {
   let types_map: Map<TableTypeHeaders, Array<string>> = new Map<TableTypeHeaders, Array<string>>([
     [TableTypeHeaders.PublicPlaces, ["name", "country", "city", "location", "category", "Rating"]],
     [TableTypeHeaders.Places, ["name", "country", "city", "location", "category", "Rating", "My rating"]],
@@ -15,7 +19,7 @@ function TabHeader(headerType:any) {
   return (
     <TableHead>
       <TableRow>
-      { types_map.get(headerType.headerType)!.map((row) => (
+      { types_map.get(headerType)!.map((row) => (
         <TableCell align='center'>{row}</TableCell>
       ))}
       </TableRow>
