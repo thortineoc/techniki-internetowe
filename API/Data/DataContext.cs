@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
 using API.Models;
@@ -16,7 +17,6 @@ namespace API.Data
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
