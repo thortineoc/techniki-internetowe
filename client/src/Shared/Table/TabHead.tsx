@@ -20,7 +20,7 @@ function TabHeader({headerType}:Props) {
     <TableHead>
       <TableRow>
       { types_map.get(headerType)!.map((row) => (
-        <TableCell align='center'>{row}</TableCell>
+        <TableCell align='center' key={row}>{row}</TableCell>
       ))}
       </TableRow>
     </TableHead>

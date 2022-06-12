@@ -17,8 +17,8 @@ function TabContent({ data }: Props) {
             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
           >
             {
-              row.map((el) => {
-                return <TableCell align='center'>{el}</TableCell>
+              row.map((el,i) => {
+                return <TableCell align='center' key={i}>{el}</TableCell>
               })
             }
           </TableRow>
