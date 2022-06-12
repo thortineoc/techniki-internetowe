@@ -46,8 +46,8 @@ function LoginForm(): ReactElement {
           console.log(response)
           login(response.data)
           setLoginModal(false)
-          navigate('/map')
-        }, 1000)
+          navigate('/favourites')
+        }, 500)
       })
       .catch(function (error) {
         setStatus({ success: false })
