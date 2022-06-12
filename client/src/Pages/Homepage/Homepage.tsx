@@ -7,6 +7,9 @@ import './Homepage.scss'
 import LoginForm from './LoginForm/LoginForm'
 import RegistrationForm from './RegistrationForm/RegistrationForm'
 import { Snackbar, Alert } from '@mui/material'
+import GenericTable from '../../Shared/Table/Table'
+import TableTypeHeaders from '../../Shared/Table/TableType'
+import React from 'react'
 
 function Homepage() {
   const { showLoginModal, showRegistrationModal, formError, formSuccess } =
@@ -46,6 +49,7 @@ function Homepage() {
             check them out. Look across many avaliable locations 🥡💈🏀.
           </div>
         </div>
+      <GenericTable dataType={TableTypeHeaders.PublicPlaces}/>
       </div>
       <Modal isOpen={showLoginModal} setIsOpen={setLoginModal}>
         <LoginForm />
