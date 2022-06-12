@@ -1,4 +1,4 @@
-@import "../../Styles/Colors";
+@import '../../Styles/Colors';
 
 .navbar {
   height: 30px;
@@ -12,21 +12,23 @@
   background-color: $toolbar__blue;
   color: #fff;
   justify-content: space-between;
-
-  .navbar-icons {
-    padding-left: 20px;
+  .navbar-row {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    .navbar-icons {
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
 
-    .navbar-hands-icon {
-      font-size: 2rem;
-      margin-top: -10px;    
-    }
+      .navbar-hands-icon {
+        font-size: 2rem;
+        margin-top: -10px;
+      }
 
-    .navbar-star-icon {
-      margin-bottom: -10px;
+      .navbar-star-icon {
+        margin-bottom: -10px;
+      }
     }
   }
 
