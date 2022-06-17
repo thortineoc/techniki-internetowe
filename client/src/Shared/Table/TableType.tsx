@@ -1,8 +1,8 @@
-enum TableTypeHeaders {
+enum TableType {
   PublicPlaces ,
   Places ,
   Favourites,
   Ratings
 }
 
-export default TableTypeHeaders
+export default TableType

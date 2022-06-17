@@ -2,18 +2,18 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
 import React from 'react'
-import TableTypeHeaders from './TableType'
+import TableType from './TableType'
 
 interface Props {
-  headerType: TableTypeHeaders
+  headerType: TableType
 }
 
 function TabHeader({headerType}:Props) {
-  let types_map: Map<TableTypeHeaders, Array<string>> = new Map<TableTypeHeaders, Array<string>>([
-    [TableTypeHeaders.PublicPlaces, ["name", "country", "city", "location", "category", "Rating"]],
-    [TableTypeHeaders.Places, ["name", "country", "city", "location", "category", "Rating", "My rating"]],
-    [TableTypeHeaders.Favourites, ["name", "country", "city", "location", "category", "Rating", "My Rating"]],
-    [TableTypeHeaders.Ratings, ["name", "country", "city", "location", "category", "Rating"]]
+  let types_map: Map<TableType, Array<string>> = new Map<TableType, Array<string>>([
+    [TableType.PublicPlaces, ["name", "country", "city", "location", "category", "Rating"]],
+    [TableType.Places, ["name", "country", "city", "location", "category", "Rating", "My rating"]],
+    [TableType.Favourites, ["name", "country", "city", "location", "category", "Rating", "My Rating"]],
+    [TableType.Ratings, ["name", "country", "city", "location", "category", "Rating"]]
   ]);
 
   return (
