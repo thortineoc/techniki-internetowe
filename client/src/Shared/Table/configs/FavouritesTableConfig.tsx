@@ -1,12 +1,12 @@
-import { HeaderCellBase } from './HeaderCellBase'
-import TableDataBase from './TableDataBase'
-import TableConfiguration from './TableConfiguration'
+import { HeaderBase } from '../HeaderBase'
+import TableDataBase from '../TableDataBase'
+import TableConfiguration from '../TableConfiguration'
 
-export interface PlacesHeader extends HeaderCellBase{
-  id: keyof PlacesData;
+export interface FavouritesHeader extends HeaderBase{
+  id: keyof FavouritesData;
 }
 
-export const PlacesHeadCells: readonly PlacesHeader[] = [
+export const FavouritesHeadCells: readonly FavouritesHeader[] = [
   {
     id: 'name',
     numeric: false,
@@ -51,11 +51,11 @@ export const PlacesHeadCells: readonly PlacesHeader[] = [
   }
 ]
 
-export interface PlacesData extends TableDataBase{
-  my_rating: string
+export interface FavouritesData extends TableDataBase{
+  my_rating: number
 }
 
-export default interface PlacesConfig extends TableConfiguration{
-  placesHeads: readonly PlacesHeader[],
-  data: Array<PlacesData>
+export default interface FavouritesConfig extends TableConfiguration{
+  favouritesHeads: readonly FavouritesHeader[],
+  data: Array<FavouritesData>
 }

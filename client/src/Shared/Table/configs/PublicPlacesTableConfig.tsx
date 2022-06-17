@@ -1,8 +1,8 @@
-import { HeaderCellBase } from './HeaderCellBase'
-import TableDataBase from './TableDataBase'
-import TableConfiguration from './TableConfiguration'
+import { HeaderBase } from '../HeaderBase'
+import TableDataBase from '../TableDataBase'
+import TableConfiguration from '../TableConfiguration'
 
-export interface PublicPlacesHeader extends HeaderCellBase {
+export interface PublicPlacesHeader extends HeaderBase {
   id: keyof PublicPlacesData;
 }
 

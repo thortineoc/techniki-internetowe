@@ -8,10 +8,16 @@ import LoginForm from './LoginForm/LoginForm'
 import RegistrationForm from './RegistrationForm/RegistrationForm'
 import { Alert, Snackbar } from '@mui/material'
 import GenericTable from '../../Shared/Table/Table'
-import React from 'react'
-import PublicPlacesConfig, { PublicPlacesHeadCells } from '../../Shared/Table/PublicPlacesTableConfig'
+import React, { useEffect, useState  } from 'react'
+import PublicPlacesConfig, {
+  PublicPlacesData,
+  PublicPlacesHeadCells
+} from '../../Shared/Table/configs/PublicPlacesTableConfig'
 import TableType from '../../Shared/Table/TableType'
-import PlacesConfig, { PlacesHeadCells } from '../../Shared/Table/PlacesTableConfig'
+import PlacesConfig, { PlacesHeadCells } from '../../Shared/Table/configs/PlacesTableConfig'
+import FavouritesConfig, { FavouritesHeadCells } from '../../Shared/Table/configs/FavouritesTableConfig'
+import RatingConfig, { RatingHeadCells } from '../../Shared/Table/configs/RatingsTableConfig'
+import axios from 'axios'
 
 function Homepage() {
   const { showLoginModal, showRegistrationModal, formError, formSuccess } =
@@ -40,27 +46,42 @@ function Homepage() {
     setFormSuccess(null)
   }
 
-  let config: PublicPlacesConfig = {
+  const [apiData, setApiData] = useState([])
+
+  const fetchData = () => {
+    axios.get('https://localhost:5001/api/Places')
+      .then((response) => {
+        console.log(response.data)
+        setApiData(response.data)
+      })
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  let config1: PublicPlacesConfig = {
     type: TableType.PublicPlaces,
     publicPlacesHeads: PublicPlacesHeadCells,
-    data: [
-      {
-        name: 'kurde',
-        country: 'no',
-        city: 'dzialaj',
-        loc: 'dzis',
-        category: 'pls',
-        rating: 'no'
-      },
-      {
-        name: 'kurde1',
-        country: 'no1',
-        city: 'dzialaj1',
-        loc: 'dzis1',
-        category: 'pls1',
-        rating: 'no1'
-      }
-    ]
+    data: apiData
+      // [
+    //   {
+    //     name: 'kurde',
+    //     country: 'no',
+    //     city: 'dzialaj',
+    //     loc: 'dzis',
+    //     category: 'pls',
+    //     rating: 5
+    //   },
+    //   {
+    //     name: 'kurde1',
+    //     country: 'no1',
+    //     city: 'dzialaj1',
+    //     loc: 'dzis1',
+    //     category: 'pls1',
+    //     rating: 1
+    //   }
+    // ]
   }
 
   let config2: PlacesConfig = {
@@ -68,13 +89,38 @@ function Homepage() {
     placesHeads: PlacesHeadCells,
     data: [
       {
-        name: 'name',
+        name: 'rat 3 myrat 4',
         country: 'country',
         city: 'city',
         loc: 'location',
         category: 'cat',
-        rating: 'rating',
-        my_rating: "my_r"
+        rating: 3,
+        my_rating: 4
+      },
+      {
+        name: 'rat 1 myrat 2',
+        country: 'no1',
+        city: 'dzialaj1',
+        loc: 'dzis1',
+        category: 'pls1',
+        rating: 1,
+        my_rating: 2
+      }
+    ]
+  }
+
+  let config3: FavouritesConfig = {
+    type: TableType.Favourites,
+    favouritesHeads: FavouritesHeadCells,
+    data: [
+      {
+        name: 'name FAVS',
+        country: 'country',
+        city: 'city',
+        loc: 'location',
+        category: 'cat',
+        rating: 5,
+        my_rating: 3.5
       },
       {
         name: 'kurde1',
@@ -82,8 +128,33 @@ function Homepage() {
         city: 'dzialaj1',
         loc: 'dzis1',
         category: 'pls1',
-        rating: 'no1',
-        my_rating: "2"
+        rating: 3,
+        my_rating: 4.5
+      }
+    ]
+  }
+
+  let config4: RatingConfig = {
+    type: TableType.Ratings,
+    ratingHeads: RatingHeadCells,
+    data: [
+      {
+        name: 'name ratings',
+        country: 'country',
+        city: 'city',
+        loc: 'location',
+        category: 'cat',
+        rating: 1,
+        my_rating: 1.5
+      },
+      {
+        name: 'kurde1',
+        country: 'no1',
+        city: 'dzialaj1',
+        loc: 'dzis1',
+        category: 'pls1',
+        rating: 2.5,
+        my_rating: 0.5
       }
     ]
   }
@@ -100,7 +171,7 @@ function Homepage() {
           </div>
         </div>
 
-        <GenericTable {...config2} />
+        <GenericTable {...config1} />
 
       </div>
       <Modal isOpen={showLoginModal} setIsOpen={setLoginModal}>

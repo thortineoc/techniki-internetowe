@@ -4,5 +4,5 @@ export default interface TableDataBase {
   city: string,
   loc: string,
   category: string,
-  rating: string
+  rating: number
 }

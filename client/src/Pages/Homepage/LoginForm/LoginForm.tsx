@@ -9,6 +9,7 @@ import TextFieldWrapper from '../../../Shared/TextFieldWrapper/TextFieldWrapper'
 import { actionCreators } from '../../../store'
 import './LoginForm.scss'
 import { useNavigate } from 'react-router-dom'
+import setupAxiosToken from '../../../Shared/AxiosInterceptor/AxiosInterceptor'
 
 interface ILoginFormFields {
   username: string
@@ -47,6 +48,7 @@ function LoginForm(): ReactElement {
           login(response.data)
           setLoginModal(false)
           navigate('/favourites')
+          setupAxiosToken(response.data.token)
         }, 500)
       })
       .catch(function (error) {

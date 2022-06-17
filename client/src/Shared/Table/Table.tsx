@@ -22,50 +22,15 @@ import Switch from '@mui/material/Switch'
 import DeleteIcon from '@mui/icons-material/Delete'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import { visuallyHidden } from '@mui/utils'
-import PublicPlacesConfig, { PublicPlacesData, PublicPlacesHeader } from './PublicPlacesTableConfig'
+import PublicPlacesConfig, { PublicPlacesHeader } from './configs/PublicPlacesTableConfig'
 import TableConfiguration from './TableConfiguration'
 import TableDataBase from './TableDataBase'
 import TableType from './TableType'
-import PlacesConfig, { PlacesHeader } from './PlacesTableConfig'
-import { HeaderCellBase } from './HeaderCellBase'
-
-// interface Data extends PublicPlacesData {
-// }
-
-function createData(
-  name: string,
-  country: string,
-  city: string,
-  loc: string,
-  category: string,
-  rating: string
-): PublicPlacesData {
-  return {
-    name,
-    country,
-    city,
-    loc,
-    category,
-    rating
-  }
-}
-
-// const rows = [
-//   createData('Cupcake', 'a', 'b', 'c', 'd', 'e'),
-//   createData('Donut', 'a', 'b', 'c', 'd', 'e'),
-//   createData('Eclair', 'a', 'b', 'c', 'd', 'e'),
-//   createData('Frozen yoghurt', 'a', 'b', 'c', 'd', 'e'),
-//   createData('Gingerbread', 'a', 'b', 'c', 'd', 'e'),
-//   createData('Honeycomb', 'a', 'b', 'loc', 'd', 'e'),
-//   createData('Ice cream sandwich', 'a', 'b', 'c', 'd', 'e'),
-//   createData('Jelly Bean', 'a', 'b', 'c', 'd', 'e'),
-//   createData('KitKat', 'a', 'b', 'c', 'd', 'e'),
-//   createData('Lollipop', 'a', 'b', 'c', 'd', 'e'),
-//   createData('Marshmallow', 'a', 'b', 'c', 'd', 'e'),
-//   createData('Nougat', 'a', 'b', 'c', 'd', 'e'),
-//   createData('Oreo', 'a', 'b', 'c', 'd', 'e')
-//
-// ]
+import PlacesConfig, { PlacesHeader } from './configs/PlacesTableConfig'
+import { HeaderBase } from './HeaderBase'
+import FavouritesConfig, { FavouritesHeader } from './configs/FavouritesTableConfig'
+import RatingConfig, { RatingHeader } from './configs/RatingsTableConfig'
+import { Rating } from '@mui/material'
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -105,47 +70,6 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
   return stabilizedThis.map((el) => el[0])
 }
 
-// external interfaces
-// interface HeadCell {
-//   disablePadding: boolean;
-//   id: keyof Data;
-//   label: string;
-//   numeric: boolean;
-// }
-
-// const headCells: readonly HeadCell[] = [
-//   {
-//     id: 'name',
-//     numeric: false,
-//     disablePadding: true,
-//     label: 'Dessert (100g serving)'
-//   },
-//   {
-//     id: 'calories',
-//     numeric: true,
-//     disablePadding: false,
-//     label: 'Calories'
-//   },
-//   {
-//     id: 'fat',
-//     numeric: true,
-//     disablePadding: false,
-//     label: 'Fat (g)'
-//   },
-//   {
-//     id: 'carbs',
-//     numeric: true,
-//     disablePadding: false,
-//     label: 'Carbs (g)'
-//   },
-//   {
-//     id: 'protein',
-//     numeric: true,
-//     disablePadding: false,
-//     label: 'Protein (g)'
-//   }
-// ]
-
 interface EnhancedTableProps {
   numSelected: number;
   onRequestSort: (event: React.MouseEvent<unknown>, property: keyof TableDataBase) => void;
@@ -153,7 +77,7 @@ interface EnhancedTableProps {
   order: Order;
   orderBy: string;
   rowCount: number;
-  headers: readonly HeaderCellBase[],
+  headers: readonly HeaderBase[],
   type: TableType
 }
 
@@ -165,14 +89,18 @@ function EnhancedTableHead(props: EnhancedTableProps) {
       onRequestSort(event, property)
     }
 
-  let headerCells:  Array<HeaderCellBase>;
+  let headerCells: Array<HeaderBase>
   if (type === TableType.PublicPlaces) {
     headerCells = headers as Array<PublicPlacesHeader>
   } else if (type === TableType.Places) {
     headerCells = headers as Array<PlacesHeader>
+  } else if (type === TableType.Favourites) {
+    headerCells = headers as Array<FavouritesHeader>
+  } else if (type === TableType.Ratings) {
+    headerCells = headers as Array<RatingHeader>
   } else {
-    headerCells = [] as Array<HeaderCellBase>
-    console.error("header type error")
+    headerCells = [] as Array<HeaderBase>
+    console.error('header type error')
   }
 
   return (
@@ -185,14 +113,14 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{
-              'aria-label': 'select all desserts'
+              'aria-label': 'select all'
             }}
           />
         </TableCell>
         {headerCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'center'}
+            align={'center'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -249,22 +177,23 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
           id='tableTitle'
           component='div'
         >
-          Nutrition
+          Places
         </Typography>
       )}
       {numSelected > 0 ? (
-        <Tooltip title='Delete'>
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title='Filter list'>
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
+          <Tooltip title='Delete'>
+            <IconButton>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        )
+        : (
+          <Tooltip title='Filter list'>
+            <IconButton>
+              {/*<FilterListIcon />*/}
+            </IconButton>
+          </Tooltip>
+        )}
     </Toolbar>
   )
 }
@@ -277,8 +206,6 @@ export default function GenericTable(config: TableConfiguration) {
   const [dense, setDense] = React.useState(false)
   const [rowsPerPage, setRowsPerPage] = React.useState(5)
 
-  console.log(config)
-  console.log(config.type)
   let data: Array<TableDataBase>
   let headers
   if (config.type === TableType.PublicPlaces) {
@@ -291,21 +218,21 @@ export default function GenericTable(config: TableConfiguration) {
     data = tmp.data
     headers = tmp.placesHeads
     console.log('Public places')
+  } else if (config.type === TableType.Favourites) {
+    let tmp = config as FavouritesConfig
+    data = tmp.data
+    headers = tmp.favouritesHeads
+  } else if (config.type === TableType.Ratings) {
+    let tmp = config as RatingConfig
+    data = tmp.data
+    headers = tmp.ratingHeads
   } else {
     data = []
     headers = []
-    console.error('Error state')
+    console.error('Error state: unknown table type!')
   }
-  console.log(data)
-  console.log(headers)
 
   let rows = data
-
-  // if (typeof definition === "PublicPlacesConfig") {
-  //   console.log("Indeed instance of!")
-  // } else {
-  //   console.log("Fuck js :/")
-  // }
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -412,27 +339,36 @@ export default function GenericTable(config: TableConfiguration) {
                           }}
                         />
                       </TableCell>
-                      {/*<TableCell*/}
-                      {/*  component='th'*/}
-                      {/*  id={labelId}*/}
-                      {/*  scope='row'*/}
-                      {/*  padding='none'*/}
-                      {/*>*/}
-                      {/*  {row.name}*/}
-                      {/*</TableCell>*/}
                       {
                         Object.getOwnPropertyNames(row).map((item) => {
                           type ObjectKey = keyof typeof row;
-                          const key = item as ObjectKey;
+                          const key = item as ObjectKey
+                          if (item === 'my_rating') {
+                            return <TableCell key={item}>
+                              <Rating
+                                name='simple-controlled'
+                                value={Number(row[key])}
+                                precision={0.5}
+                                onChange={(event, newValue) => {
+                                  // setValue(newValue);
+                                  console.log(newValue)
+                                  if (newValue != null) {
+                                    // value = newValue
+                                  }
+                                }}
+                              />
+                            </TableCell>
+                          } else if (item === 'rating') {
+                            let val: number = Number(row[key])
+                            return <TableCell key={item}>
+                              <Rating name='read-only' value={val} readOnly />
+                            </TableCell>
+                          }
+
                           return <TableCell align='center' key={item}>{row[key]}</TableCell>
                         })
                       }
-                      {/*<TableCell align='center'>{row.name}</TableCell>*/}
-                      {/*<TableCell align='center'>{row.country}</TableCell>*/}
-                      {/*<TableCell align='center'>{row.city}</TableCell>*/}
-                      {/*<TableCell align='center'>{row.loc}</TableCell>*/}
-                      {/*<TableCell align='center'>{row.category}</TableCell>*/}
-                      {/*<TableCell align='center'>{row.rating}</TableCell>*/}
+
                     </TableRow>
                   )
                 })}
