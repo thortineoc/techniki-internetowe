@@ -22,7 +22,7 @@ function PlacesAddedByUserPage() {
           Add a new place
         </Button>
         <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-          <AddNewPlaceForm />
+          <AddNewPlaceForm setIsOpen={setIsOpen} />
         </Modal>
       </div>
     </div>

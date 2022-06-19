@@ -45,12 +45,13 @@ interface ICountry {
   unicodeFlag: string
 }
 
-function AddNewPlaceForm() {
+function AddNewPlaceForm({ setIsOpen }: any) {
   const onSubmit: (values: INewPlaceFormFields, { resetForm }: any) => void = (
     values: INewPlaceFormFields,
     { resetForm, setStatus, setSubmitting }: any
   ) => {
     console.log(JSON.stringify(values))
+    setIsOpen(false)
     console.log('SUMBIT :)')
   }
   const [countries, setCountries] = useState<Array<string>>([])
