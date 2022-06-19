@@ -1,24 +1,40 @@
 @import '../../Styles/Colors.scss';
 
 .homepage {
-    background-color: $homepage__gray;
-    min-height: 659px;
-    background-image: url('./location.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: right;
+  background-color: $homepage__gray;
+  height: 659px;
+  background-image: url('./location.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right;
+  display: flex;
+  flex-direction: column;
 
-    .homepage-textbox {
-        padding: 130px 0 0 100px;
-        max-width: 800px;
-        font-size: 1.5rem;
-        line-height: 3rem;
-        color: rgb(39, 39, 39);
+  .homepage-textbox {
+    padding: 130px 0 0 100px;
+    max-width: 800px;
+    font-size: 1.5rem;
+    line-height: 3rem;
+    color: rgb(39, 39, 39);
 
-        .homepage-title {
-            margin: 0;
-            padding-bottom: 40px;
-            color: white
-        }
+    .homepage-title {
+      margin: 0;
+      padding-bottom: 40px;
+      color: white;
     }
+  }
+
+  .top-ten-btn-wrapper {
+    margin: 95px;
+    margin-bottom: 0;
+
+    .top-ten-btn {
+      padding: 15px;
+    }
+  }
+
+  .table-wrapper {
+    margin-top: 200px;
+    margin-bottom: 100px;
+  }
 }

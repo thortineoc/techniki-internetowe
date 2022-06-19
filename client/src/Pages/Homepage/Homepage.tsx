@@ -6,7 +6,17 @@ import { IStore } from '../../store/interfaces'
 import './Homepage.scss'
 import LoginForm from './LoginForm/LoginForm'
 import RegistrationForm from './RegistrationForm/RegistrationForm'
-import { Snackbar, Alert } from '@mui/material'
+import { Alert, Snackbar } from '@mui/material'
+import GenericTable from '../../Shared/Table/Table'
+import React, { useEffect, useState } from 'react'
+import PublicPlacesConfig, {
+  PublicPlacesData,
+  PublicPlacesHeadCells
+} from '../../Shared/Table/configs/PublicPlacesTableConfig'
+import TableType from '../../Shared/Table/TableType'
+import axios from 'axios'
+import Footer from '../../Shared/Footer/Footer'
+import { Button } from '@material-ui/core'
 
 function Homepage() {
   const { showLoginModal, showRegistrationModal, formError, formSuccess } =
@@ -35,6 +45,58 @@ function Homepage() {
     setFormSuccess(null)
   }
 
+  const [apiData, setApiData] = useState([])
+
+  const fetchPublicPlaces = () => {
+    axios
+      .get('https://localhost:5001/api/Places')
+      .then((response) => {
+        console.log(response.data)
+        let structuredResponse: any = response.data.map((place: any) => {
+          let meanRating = NaN
+          if (place.ratings && place.ratings.length > 0) {
+            let reducer = (total: any, currentValue: any) => {
+              return total.rate + currentValue.rate
+            }
+            meanRating =
+              place.ratings.length === 1
+                ? place.ratings[0].rate
+                : place.ratings.reduce(reducer) / place.ratings.length
+          }
+          console.log(response.data)
+          let tmp: PublicPlacesData = {
+            id: place.placeId,
+            name: place.name,
+            country: place.country,
+            city: place.city,
+            loc: place.location,
+            category: place.category,
+            rating: meanRating
+          }
+          return tmp
+        })
+        setApiData(structuredResponse)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
+  console.log(apiData)
+
+  useEffect(() => {
+    fetchPublicPlaces()
+  }, [])
+
+  let config1: PublicPlacesConfig = {
+    type: TableType.PublicPlaces,
+    publicPlacesHeads: PublicPlacesHeadCells,
+    data: apiData,
+    selectable: false
+  }
+
+  const firstItemRef = React.createRef<HTMLDivElement>()
+
   return (
     <div>
       <div className="homepage">
@@ -43,9 +105,30 @@ function Homepage() {
           <div>
             Welcome to Polecajka app. You can find your favourite places 🗺️,
             save them 📍 and rate ⭐. You can also add new spots so others may
-            check them out. Look across many avaliable locations 🥡💈🏀.
+            check them out. Look across many available locations 🥡💈🏀.
           </div>
         </div>
+        <div className="top-ten-btn-wrapper">
+          <Button
+            color="primary"
+            variant="contained"
+            className="top-ten-btn"
+            onClick={() =>
+              firstItemRef &&
+              firstItemRef.current &&
+              firstItemRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+                inline: 'nearest'
+              })
+            }>
+            See our top 10 places
+          </Button>
+        </div>
+        <div ref={firstItemRef} className="table-wrapper">
+          <GenericTable {...config1} />
+        </div>
+        <Footer />
       </div>
       <Modal isOpen={showLoginModal} setIsOpen={setLoginModal}>
         <LoginForm />

@@ -1,5 +1,11 @@
 @import '../../Styles/Colors.scss';
 
 .AllPlacesPage {
-
+  height: 659px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .AllPlacesPage-top-row {
+    padding: 10px 30px;
+  }
 }

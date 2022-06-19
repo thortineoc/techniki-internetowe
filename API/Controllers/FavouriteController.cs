@@ -48,10 +48,10 @@ namespace API.Controllers
         {
             var favs = await _favouritesRepository.GetAll();
             var user = await _userRepository.GetUserById(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-            var favsDtosTasks = favs.Select(async f => new FavouriteDto()
+            var favsDtos = favs.Select(f => new FavouriteDto()
             {
                 Id = f.FavouriteId,
-                Place = await _placeRepository.GetPlaceById(f.PlaceId),
+                Place = _placeRepository.GetPlaceById(f.PlaceId).Result,
                 User = new AppUserDto()
                 {
                     Id = user.Id,
@@ -60,9 +60,9 @@ namespace API.Controllers
                 }
             }).ToList();
             IList<FavouriteDto> dtoList = new List<FavouriteDto>();
-            foreach (var t in favsDtosTasks)
+            foreach (var t in favsDtos)
             {
-                dtoList.Add(await t);
+                dtoList.Add(t);
             }
             return Ok(dtoList);
         }

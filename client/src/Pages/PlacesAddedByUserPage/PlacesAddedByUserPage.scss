@@ -1,5 +1,17 @@
 @import '../../Styles/Colors.scss';
 
 .PlacesAddedByUserPage {
-
+  height: 659px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .PlacesAddedByUserPage-top-row {
+    display: flex;
+    padding: 10px 30px;
+    justify-content: space-between;
+    align-items: center;
+    .PlacesAddedByUserPage-btn {
+      max-height: 35.5px;
+    }
+  }
 }

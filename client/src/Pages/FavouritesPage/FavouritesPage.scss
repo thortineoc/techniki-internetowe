@@ -1,5 +1,12 @@
 @import '../../Styles/Colors.scss';
 
 .FavouritesPage {
+  height: 659px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
+  .FavouritesPage-top-row {
+    padding: 10px 30px;
+  }
 }
