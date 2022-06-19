@@ -133,29 +133,6 @@ namespace api.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("API.Models.Favourite", b =>
-                {
-                    b.Property<int>("FavouriteId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FavouriteId"));
-
-                    b.Property<int?>("PlaceId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("FavouriteId");
-
-                    b.HasIndex("PlaceId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Favourites");
-                });
-
             modelBuilder.Entity("API.Models.Place", b =>
                 {
                     b.Property<int>("PlaceId")
@@ -186,7 +163,7 @@ namespace api.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("Places");
+                    b.ToTable("Places", (string)null);
                 });
 
             modelBuilder.Entity("API.Models.Rating", b =>
@@ -212,7 +189,7 @@ namespace api.Migrations
 
                     b.HasIndex("PlaceId");
 
-                    b.ToTable("Ratings");
+                    b.ToTable("Ratings", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -318,21 +295,6 @@ namespace api.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("API.Models.Favourite", b =>
-                {
-                    b.HasOne("API.Models.Place", "Place")
-                        .WithMany()
-                        .HasForeignKey("PlaceId");
-
-                    b.HasOne("API.Models.AppUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Place");
 
                     b.Navigation("User");
                 });
