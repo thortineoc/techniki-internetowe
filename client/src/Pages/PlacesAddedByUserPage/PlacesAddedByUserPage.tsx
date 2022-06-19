@@ -15,7 +15,13 @@ import Footer from '../../Shared/Footer/Footer'
 function PlacesAddedByUserPage() {
   const { user } = useSelector((state: any) => state.userReducer)
   const [apiData, setApiData] = useState([])
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (!isOpen) {
+      fetchUserPlaces()
+    }
+  }, [isOpen])
 
   const fetchUserPlaces = () => {
     axios
@@ -62,10 +68,6 @@ function PlacesAddedByUserPage() {
         console.error(err)
       })
   }
-
-  useEffect(() => {
-    fetchUserPlaces()
-  }, [])
 
   let rateHandler = function ratePlace(id: number, value: number): void {
     axios

@@ -53,12 +53,12 @@ function AddNewPlaceForm({ setIsOpen }: any) {
     values: INewPlaceFormFields,
     { resetForm, setStatus, setSubmitting }: any
   ) => {
-    console.log(JSON.stringify(values))
-    axios.post('https://localhost:5001/api/Places/', {
-      ...values,
-      appUserId: user.ID
-    })
-    setIsOpen(false)
+    const req = { ...values, appUserId: user.id }
+    console.log(req)
+    axios
+      .post('https://localhost:5001/api/Places/', req)
+      .then((response) => setIsOpen(false))
+      .catch((err) => console.log(err))
     console.log('SUMBIT :)')
   }
   const [countries, setCountries] = useState<Array<string>>([])
