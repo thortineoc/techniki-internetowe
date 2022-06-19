@@ -3,11 +3,14 @@ import './PlacesAddedByUserPage.scss'
 import { Button } from '@material-ui/core'
 import Modal from '../../Shared/Modal/Modal'
 import AddNewPlaceForm from './AddNewPlaceForm/AddNewPlaceForm'
-import FavouritesConfig, { FavouritesHeadCells } from '../../Shared/Table/configs/FavouritesTableConfig'
+import FavouritesConfig, {
+  FavouritesHeadCells
+} from '../../Shared/Table/configs/FavouritesTableConfig'
 import TableType from '../../Shared/Table/TableType'
 import axios from 'axios'
 import GenericTable from '../../Shared/Table/Table'
 import { useSelector } from 'react-redux'
+import Footer from '../../Shared/Footer/Footer'
 
 function PlacesAddedByUserPage() {
   const { user } = useSelector((state: any) => state.userReducer)
@@ -15,7 +18,8 @@ function PlacesAddedByUserPage() {
   const [isOpen, setIsOpen] = useState(false)
 
   const fetchUserPlaces = () => {
-    axios.get('https://localhost:5001/api/Places/')
+    axios
+      .get('https://localhost:5001/api/Places/')
       .then((response) => {
         console.log(response.data)
         let structuredResponse: any = response.data
@@ -28,9 +32,10 @@ function PlacesAddedByUserPage() {
               let reducer = (total: any, currentValue: any) => {
                 return total.rate + currentValue.rate
               }
-              meanRating = place.ratings.length === 1
-                ? place.ratings[0].rate :
-                place.ratings.reduce(reducer) / place.ratings.length
+              meanRating =
+                place.ratings.length === 1
+                  ? place.ratings[0].rate
+                  : place.ratings.reduce(reducer) / place.ratings.length
             }
             let my_rate = null
             place.ratings.forEach((rate: any) => {
@@ -38,7 +43,7 @@ function PlacesAddedByUserPage() {
                 my_rate = rate.rate
               }
             })
-          console.log(place)
+            console.log(place)
             return {
               id: place.placeId,
               name: place.name,
@@ -49,12 +54,11 @@ function PlacesAddedByUserPage() {
               rating: meanRating,
               my_rating: my_rate ?? 0
             }
-          }
-        )
+          })
         setApiData(structuredResponse)
         console.log(structuredResponse)
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err)
       })
   }
@@ -64,8 +68,8 @@ function PlacesAddedByUserPage() {
   }, [])
 
   let rateHandler = function ratePlace(id: number, value: number): void {
-    axios.put('https://localhost:5001/api/Rating',
-      {
+    axios
+      .put('https://localhost:5001/api/Rating', {
         AppUserId: user.id,
         PlaceId: id,
         Rate: value
@@ -78,10 +82,11 @@ function PlacesAddedByUserPage() {
       })
   }
 
-  let deletePlaceHandler = function(id: readonly number[]): void {
-    id.forEach(id => {
+  let deletePlaceHandler = function (id: readonly number[]): void {
+    id.forEach((id) => {
       console.log('Deleting fav with id: ' + id)
-      axios.delete('https://localhost:5001/api/Places/' + id)
+      axios
+        .delete('https://localhost:5001/api/Places/' + id)
         .then(() => fetchUserPlaces())
         .catch((err) => console.error(err))
     })
@@ -97,8 +102,6 @@ function PlacesAddedByUserPage() {
   }
 
   console.log(apiData)
-
-
 
   return (
     <div className="PlacesAddedByUserPage">
@@ -116,6 +119,7 @@ function PlacesAddedByUserPage() {
         </Button>
       </div>
       <GenericTable {...config} />
+      <Footer />
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <AddNewPlaceForm setIsOpen={setIsOpen} />
       </Modal>

@@ -14,10 +14,9 @@ import PublicPlacesConfig, {
   PublicPlacesHeadCells
 } from '../../Shared/Table/configs/PublicPlacesTableConfig'
 import TableType from '../../Shared/Table/TableType'
-import PlacesConfig, { PlacesData, PlacesHeadCells } from '../../Shared/Table/configs/PlacesTableConfig'
-import FavouritesConfig, { FavouritesHeadCells } from '../../Shared/Table/configs/FavouritesTableConfig'
-import RatingConfig, { RatingHeadCells } from '../../Shared/Table/configs/RatingsTableConfig'
 import axios from 'axios'
+import Footer from '../../Shared/Footer/Footer'
+import { Button } from '@material-ui/core'
 
 function Homepage() {
   const { showLoginModal, showRegistrationModal, formError, formSuccess } =
@@ -49,35 +48,36 @@ function Homepage() {
   const [apiData, setApiData] = useState([])
 
   const fetchPublicPlaces = () => {
-    axios.get('https://localhost:5001/api/Places')
+    axios
+      .get('https://localhost:5001/api/Places')
       .then((response) => {
         console.log(response.data)
         let structuredResponse: any = response.data.map((place: any) => {
-            let meanRating = NaN
-            if (place.ratings && place.ratings.length > 0) {
-              let reducer = (total: any, currentValue: any) => {
-                return total.rate + currentValue.rate
-              }
-              meanRating = place.ratings.length === 1
-                ? place.ratings[0].rate :
-                place.ratings.reduce(reducer) / place.ratings.length
+          let meanRating = NaN
+          if (place.ratings && place.ratings.length > 0) {
+            let reducer = (total: any, currentValue: any) => {
+              return total.rate + currentValue.rate
             }
-            console.log(response.data)
-            let tmp: PublicPlacesData = {
-              id: place.placeId,
-              name: place.name,
-              country: place.country,
-              city: place.city,
-              loc: place.location,
-              category: place.category,
-              rating: meanRating
-            }
-            return tmp
+            meanRating =
+              place.ratings.length === 1
+                ? place.ratings[0].rate
+                : place.ratings.reduce(reducer) / place.ratings.length
           }
-        )
+          console.log(response.data)
+          let tmp: PublicPlacesData = {
+            id: place.placeId,
+            name: place.name,
+            country: place.country,
+            city: place.city,
+            loc: place.location,
+            category: place.category,
+            rating: meanRating
+          }
+          return tmp
+        })
         setApiData(structuredResponse)
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err)
       })
   }
@@ -92,23 +92,43 @@ function Homepage() {
     type: TableType.PublicPlaces,
     publicPlacesHeads: PublicPlacesHeadCells,
     data: apiData,
-    selectable: false,
+    selectable: false
   }
+
+  const firstItemRef = React.createRef<HTMLDivElement>()
 
   return (
     <div>
-      <div className='homepage'>
-        <div className='homepage-textbox'>
-          <h1 className='homepage-title'>Polecajka</h1>
+      <div className="homepage">
+        <div className="homepage-textbox">
+          <h1 className="homepage-title">Polecajka</h1>
           <div>
             Welcome to Polecajka app. You can find your favourite places 🗺️,
             save them 📍 and rate ⭐. You can also add new spots so others may
             check them out. Look across many available locations 🥡💈🏀.
           </div>
         </div>
-
-        <GenericTable {...config1} />
-
+        <div className="top-ten-btn-wrapper">
+          <Button
+            color="primary"
+            variant="contained"
+            className="top-ten-btn"
+            onClick={() =>
+              firstItemRef &&
+              firstItemRef.current &&
+              firstItemRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+                inline: 'nearest'
+              })
+            }>
+            See our top 10 places
+          </Button>
+        </div>
+        <div ref={firstItemRef} className="table-wrapper">
+          <GenericTable {...config1} />
+        </div>
+        <Footer />
       </div>
       <Modal isOpen={showLoginModal} setIsOpen={setLoginModal}>
         <LoginForm />
@@ -123,7 +143,7 @@ function Homepage() {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
         <Alert
           onClose={handleCloseFormError}
-          severity='error'
+          severity="error"
           sx={{ width: '100%' }}>
           {formError}
         </Alert>
@@ -135,7 +155,7 @@ function Homepage() {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
         <Alert
           onClose={handleCloseFormSuccess}
-          severity='success'
+          severity="success"
           sx={{ width: '100%' }}>
           {formSuccess}
         </Alert>

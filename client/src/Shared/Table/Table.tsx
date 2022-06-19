@@ -17,18 +17,19 @@ import Paper from '@mui/material/Paper'
 import Checkbox from '@mui/material/Checkbox'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Switch from '@mui/material/Switch'
 import DeleteIcon from '@mui/icons-material/Delete'
-import FilterListIcon from '@mui/icons-material/FilterList'
 import { visuallyHidden } from '@mui/utils'
-import PublicPlacesConfig, { PublicPlacesHeader } from './configs/PublicPlacesTableConfig'
+import PublicPlacesConfig, {
+  PublicPlacesHeader
+} from './configs/PublicPlacesTableConfig'
 import TableConfiguration from './TableConfiguration'
 import TableDataBase from './TableDataBase'
 import TableType from './TableType'
 import PlacesConfig, { PlacesHeader } from './configs/PlacesTableConfig'
 import { HeaderBase } from './HeaderBase'
-import FavouritesConfig, { FavouritesHeader } from './configs/FavouritesTableConfig'
+import FavouritesConfig, {
+  FavouritesHeader
+} from './configs/FavouritesTableConfig'
 import RatingConfig, { RatingHeader } from './configs/RatingsTableConfig'
 import { Rating } from '@mui/material'
 
@@ -42,7 +43,7 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   return 0
 }
 
-type Order = 'asc' | 'desc';
+type Order = 'asc' | 'desc'
 
 function getComparator<Key extends keyof any>(
   order: Order,
@@ -58,7 +59,10 @@ function getComparator<Key extends keyof any>(
 
 // This method is created for cross-browser compatibility, if you don't
 // need to support IE11, you can use Array.prototype.sort() directly
-function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
+function stableSort<T>(
+  array: readonly T[],
+  comparator: (a: T, b: T) => number
+) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number])
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0])
@@ -71,20 +75,32 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
 }
 
 interface EnhancedTableProps {
-  numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof TableDataBase) => void;
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  order: Order;
-  orderBy: string;
-  rowCount: number;
-  headers: readonly HeaderBase[],
-  type: TableType,
+  numSelected: number
+  onRequestSort: (
+    event: React.MouseEvent<unknown>,
+    property: keyof TableDataBase
+  ) => void
+  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void
+  order: Order
+  orderBy: string
+  rowCount: number
+  headers: readonly HeaderBase[]
+  type: TableType
   selectable: boolean
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, headers, type, selectable } =
-    props
+  const {
+    onSelectAllClick,
+    order,
+    orderBy,
+    numSelected,
+    rowCount,
+    onRequestSort,
+    headers,
+    type,
+    selectable
+  } = props
   const createSortHandler =
     (property: keyof TableDataBase) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property)
@@ -107,10 +123,10 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        {selectable ?
-          (<TableCell padding='checkbox'>
+        {selectable ? (
+          <TableCell padding="checkbox">
             <Checkbox
-              color='primary'
+              color="primary"
               indeterminate={numSelected > 0 && numSelected < rowCount}
               checked={rowCount > 0 && numSelected === rowCount}
               onChange={onSelectAllClick}
@@ -118,24 +134,22 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                 'aria-label': 'select all'
               }}
             />
-          </TableCell>) : null
-        }
+          </TableCell>
+        ) : null}
 
         {headerCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={'center'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
+            sortDirection={orderBy === headCell.id ? order : false}>
             <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
+              onClick={createSortHandler(headCell.id)}>
               {headCell.label}
               {orderBy === headCell.id ? (
-                <Box component='span' sx={visuallyHidden}>
+                <Box component="span" sx={visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </Box>
               ) : null}
@@ -148,9 +162,9 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 }
 
 interface EnhancedTableToolbarProps {
-  numSelected: number,
-  selected: readonly number[],
-  onClick_fav_delete?: ((id: readonly number[]) => void)
+  numSelected: number
+  selected: readonly number[]
+  onClick_fav_delete?: (id: readonly number[]) => void
   setSelected: React.Dispatch<React.SetStateAction<readonly number[]>>
 }
 
@@ -164,52 +178,53 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
         pr: { xs: 1, sm: 1 },
         ...(numSelected > 0 && {
           bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity)
+            alpha(
+              theme.palette.primary.main,
+              theme.palette.action.activatedOpacity
+            )
         })
-      }}
-    >
+      }}>
       {numSelected > 0 ? (
         <Typography
           sx={{ flex: '1 1 100%' }}
-          color='inherit'
-          variant='subtitle1'
-          component='div'
-        >
+          color="inherit"
+          variant="subtitle1"
+          component="div">
           {numSelected} selected
         </Typography>
       ) : (
         <Typography
           sx={{ flex: '1 1 100%' }}
-          variant='h6'
-          id='tableTitle'
-          component='div'
-        >
+          variant="h6"
+          id="tableTitle"
+          component="div">
           Places
         </Typography>
       )}
       {numSelected > 0 ? (
-          <Tooltip title='Delete'>
-            <IconButton>
-              <DeleteIcon onClick={() => {
+        <Tooltip title="Delete">
+          <IconButton>
+            <DeleteIcon
+              onClick={() => {
                 console.log('Removig favs: ' + selected)
                 if (selected && onClick_fav_delete) {
                   onClick_fav_delete(selected)
                   let newSelected: readonly number[] = []
                   setSelected(newSelected)
                 } else {
-                  console.error('Selected or fav delete handler is undefined or null')
+                  console.error(
+                    'Selected or fav delete handler is undefined or null'
+                  )
                 }
-              }} />
-            </IconButton>
-          </Tooltip>
-        )
-        : (
-          <Tooltip title='Filter list'>
-            <IconButton>
-              {/*<FilterListIcon />*/}
-            </IconButton>
-          </Tooltip>
-        )}
+              }}
+            />
+          </IconButton>
+        </Tooltip>
+      ) : (
+        <Tooltip title="Filter list">
+          <IconButton>{/*<FilterListIcon />*/}</IconButton>
+        </Tooltip>
+      )}
     </Toolbar>
   )
 }
@@ -219,7 +234,6 @@ export default function GenericTable(config: TableConfiguration) {
   const [orderBy, setOrderBy] = React.useState<keyof TableDataBase>('loc')
   const [selected, setSelected] = React.useState<readonly number[]>([])
   const [page, setPage] = React.useState(0)
-  const [dense, setDense] = React.useState(false)
   const [rowsPerPage, setRowsPerPage] = React.useState(5)
 
   let data: Array<TableDataBase>
@@ -291,13 +305,11 @@ export default function GenericTable(config: TableConfiguration) {
     setPage(newPage)
   }
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
-  }
-
-  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDense(event.target.checked)
   }
 
   const isSelected = (id: number) => selected.indexOf(id) !== -1
@@ -306,11 +318,21 @@ export default function GenericTable(config: TableConfiguration) {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0
 
-  let fields = ['name', 'country', 'city', 'loc', 'location', 'category', 'rating', 'my_rating', 'actions']
+  let fields = [
+    'name',
+    'country',
+    'city',
+    'loc',
+    'location',
+    'category',
+    'rating',
+    'my_rating',
+    'actions'
+  ]
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
+    <Box sx={{ width: '80vw' }} className="TableWrapper">
+      <Paper sx={{ width: '80vw', mb: 2 }}>
         <EnhancedTableToolbar
           numSelected={selected.length}
           selected={selected}
@@ -318,11 +340,7 @@ export default function GenericTable(config: TableConfiguration) {
           setSelected={setSelected}
         />
         <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby='tableTitle'
-            size={dense ? 'small' : 'medium'}
-          >
+          <Table sx={{ width: '80vw' }} aria-labelledby="tableTitle">
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
@@ -347,66 +365,72 @@ export default function GenericTable(config: TableConfiguration) {
                     <TableRow
                       hover
                       onClick={(event) => handleClick(event, row.id)}
-                      role='checkbox'
+                      role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.name}
-                      selected={isItemSelected}
-                    >
-                      {
-                        config.selectable ? (<TableCell padding='checkbox'>
-                            <Checkbox
-                              color='primary'
-                              checked={isItemSelected}
-                              inputProps={{
-                                'aria-labelledby': labelId
-                              }}
-                            />
-                          </TableCell>
-                        ) : null
-                      }
-                      {
-                        Object.getOwnPropertyNames(row).map((item) => {
-                          if (!fields.includes(item.toLowerCase())) {
-                            return []
-                          }
-                          type ObjectKey = keyof typeof row;
-                          const key = item as ObjectKey
-                          if (item === 'my_rating') {
-                            return <TableCell key={item}>
+                      selected={isItemSelected}>
+                      {config.selectable ? (
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            color="primary"
+                            checked={isItemSelected}
+                            inputProps={{
+                              'aria-labelledby': labelId
+                            }}
+                          />
+                        </TableCell>
+                      ) : null}
+                      {Object.getOwnPropertyNames(row).map((item) => {
+                        if (!fields.includes(item.toLowerCase())) {
+                          return []
+                        }
+                        type ObjectKey = keyof typeof row
+                        const key = item as ObjectKey
+                        if (item === 'my_rating') {
+                          return (
+                            <TableCell key={item}>
                               <Rating
-                                name='simple-controlled'
+                                name="simple-controlled"
                                 value={Number(row[key] ?? 0)}
                                 precision={1}
                                 onChange={(event, newValue) => {
                                   if (newValue && config.onClick_rating) {
                                     config.onClick_rating(row.id, newValue)
                                   } else {
-                                    console.error('Rating new value is absent or handler is null')
+                                    console.error(
+                                      'Rating new value is absent or handler is null'
+                                    )
                                   }
                                 }}
                               />
                             </TableCell>
-                          } else if (item === 'rating') {
-                            let val: number = Number(row[key])
-                            return <TableCell key={item}>
-                              <Rating name='read-only' precision={0.5} value={val} readOnly />
+                          )
+                        } else if (item === 'rating') {
+                          let val: number = Number(row[key])
+                          return (
+                            <TableCell key={item}>
+                              <Rating
+                                name="read-only"
+                                precision={0.5}
+                                value={val}
+                                readOnly
+                              />
                             </TableCell>
-                          }
+                          )
+                        }
 
-                          return <TableCell align='center' key={item}>{row[key]}</TableCell>
-                        })
-                      }
-
+                        return (
+                          <TableCell align="center" key={item}>
+                            {row[key]}
+                          </TableCell>
+                        )
+                      })}
                     </TableRow>
                   )
                 })}
               {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows
-                  }}
-                >
+                <TableRow>
                   <TableCell colSpan={6} />
                 </TableRow>
               )}
@@ -415,7 +439,7 @@ export default function GenericTable(config: TableConfiguration) {
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
-          component='div'
+          component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
@@ -423,10 +447,6 @@ export default function GenericTable(config: TableConfiguration) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label='Dense padding'
-      />
     </Box>
   )
 }
