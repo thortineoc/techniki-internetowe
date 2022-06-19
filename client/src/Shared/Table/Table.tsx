@@ -389,7 +389,7 @@ export default function GenericTable(config: TableConfiguration) {
                         const key = item as ObjectKey
                         if (item === 'my_rating') {
                           return (
-                            <TableCell key={item}>
+                            <TableCell key={item} align="center">
                               <Rating
                                 name="simple-controlled"
                                 value={Number(row[key] ?? 0)}
@@ -409,7 +409,7 @@ export default function GenericTable(config: TableConfiguration) {
                         } else if (item === 'rating') {
                           let val: number = Number(row[key])
                           return (
-                            <TableCell key={item}>
+                            <TableCell key={item} align="center">
                               <Rating
                                 name="read-only"
                                 precision={0.5}

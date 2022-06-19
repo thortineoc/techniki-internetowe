@@ -7,6 +7,7 @@ import axios, { AxiosResponse } from 'axios'
 import { Button, TextField } from '@material-ui/core'
 import { Autocomplete } from '@mui/material'
 import jsonData from '../../../Data/categories.json'
+import { useSelector } from 'react-redux'
 
 const initialValues = {
   name: '',
@@ -46,11 +47,17 @@ interface ICountry {
 }
 
 function AddNewPlaceForm({ setIsOpen }: any) {
+  const { user } = useSelector((state: any) => state.userReducer)
+
   const onSubmit: (values: INewPlaceFormFields, { resetForm }: any) => void = (
     values: INewPlaceFormFields,
     { resetForm, setStatus, setSubmitting }: any
   ) => {
     console.log(JSON.stringify(values))
+    axios.post('https://localhost:5001/api/Places/', {
+      ...values,
+      appUserId: user.ID
+    })
     setIsOpen(false)
     console.log('SUMBIT :)')
   }
@@ -104,7 +111,7 @@ function AddNewPlaceForm({ setIsOpen }: any) {
                   <TextField
                     {...params}
                     onChange={formik.handleChange}
-                    label="Cities"
+                    label="Category"
                     fullWidth
                     value={formik.values?.category}
                   />

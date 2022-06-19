@@ -3,8 +3,8 @@ import TableDataBase from '../TableDataBase'
 import TableConfiguration from '../TableConfiguration'
 import React, { ReactElement } from 'react'
 
-export interface PlacesHeader extends HeaderBase{
-  id: keyof PlacesData;
+export interface PlacesHeader extends HeaderBase {
+  id: keyof PlacesData
 }
 
 export const PlacesHeadCells: readonly PlacesHeader[] = [
@@ -42,7 +42,7 @@ export const PlacesHeadCells: readonly PlacesHeader[] = [
     id: 'rating',
     numeric: false,
     disablePadding: true,
-    label: 'rating'
+    label: 'Rating'
   },
   {
     id: 'my_rating',
@@ -58,12 +58,12 @@ export const PlacesHeadCells: readonly PlacesHeader[] = [
   }
 ]
 
-export interface PlacesData extends TableDataBase{
-  my_rating: number,
+export interface PlacesData extends TableDataBase {
+  my_rating: number
   actions?: Array<ReactElement<any, any>>
 }
 
-export default interface PlacesConfig extends TableConfiguration{
-  placesHeads: readonly PlacesHeader[],
-  data: Array<PlacesData>,
+export default interface PlacesConfig extends TableConfiguration {
+  placesHeads: readonly PlacesHeader[]
+  data: Array<PlacesData>
 }
