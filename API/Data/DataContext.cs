@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
-using API.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 

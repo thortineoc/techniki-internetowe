@@ -78,11 +78,12 @@ interface EnhancedTableProps {
   orderBy: string;
   rowCount: number;
   headers: readonly HeaderBase[],
-  type: TableType
+  type: TableType,
+  selectable: boolean
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, headers, type } =
+  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, headers, type, selectable } =
     props
   const createSortHandler =
     (property: keyof TableDataBase) => (event: React.MouseEvent<unknown>) => {
@@ -106,17 +107,20 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding='checkbox'>
-          <Checkbox
-            color='primary'
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all'
-            }}
-          />
-        </TableCell>
+        {selectable ?
+          (<TableCell padding='checkbox'>
+            <Checkbox
+              color='primary'
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={rowCount > 0 && numSelected === rowCount}
+              onChange={onSelectAllClick}
+              inputProps={{
+                'aria-label': 'select all'
+              }}
+            />
+          </TableCell>) : null
+        }
+
         {headerCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -144,11 +148,14 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 }
 
 interface EnhancedTableToolbarProps {
-  numSelected: number;
+  numSelected: number,
+  selected: readonly number[],
+  onClick_fav_delete?: ((id: readonly number[]) => void)
+  setSelected: React.Dispatch<React.SetStateAction<readonly number[]>>
 }
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-  const { numSelected } = props
+  const { numSelected, selected, onClick_fav_delete, setSelected } = props
 
   return (
     <Toolbar
@@ -183,7 +190,16 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
       {numSelected > 0 ? (
           <Tooltip title='Delete'>
             <IconButton>
-              <DeleteIcon />
+              <DeleteIcon onClick={() => {
+                console.log('Removig favs: ' + selected)
+                if (selected && onClick_fav_delete) {
+                  onClick_fav_delete(selected)
+                  let newSelected: readonly number[] = []
+                  setSelected(newSelected)
+                } else {
+                  console.error('Selected or fav delete handler is undefined or null')
+                }
+              }} />
             </IconButton>
           </Tooltip>
         )
@@ -201,7 +217,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
 export default function GenericTable(config: TableConfiguration) {
   const [order, setOrder] = React.useState<Order>('asc')
   const [orderBy, setOrderBy] = React.useState<keyof TableDataBase>('loc')
-  const [selected, setSelected] = React.useState<readonly string[]>([])
+  const [selected, setSelected] = React.useState<readonly number[]>([])
   const [page, setPage] = React.useState(0)
   const [dense, setDense] = React.useState(false)
   const [rowsPerPage, setRowsPerPage] = React.useState(5)
@@ -245,19 +261,19 @@ export default function GenericTable(config: TableConfiguration) {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name)
+      const newSelecteds = rows.map((n) => n.id)
       setSelected(newSelecteds)
       return
     }
     setSelected([])
   }
 
-  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-    const selectedIndex = selected.indexOf(name)
-    let newSelected: readonly string[] = []
+  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
+    const selectedIndex = selected.indexOf(id)
+    let newSelected: readonly number[] = []
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name)
+      newSelected = newSelected.concat(selected, id)
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1))
     } else if (selectedIndex === selected.length - 1) {
@@ -268,7 +284,6 @@ export default function GenericTable(config: TableConfiguration) {
         selected.slice(selectedIndex + 1)
       )
     }
-
     setSelected(newSelected)
   }
 
@@ -285,16 +300,23 @@ export default function GenericTable(config: TableConfiguration) {
     setDense(event.target.checked)
   }
 
-  const isSelected = (name: string) => selected.indexOf(name) !== -1
+  const isSelected = (id: number) => selected.indexOf(id) !== -1
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0
 
+  let fields = ['name', 'country', 'city', 'loc', 'location', 'category', 'rating', 'my_rating', 'actions']
+
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          selected={selected}
+          onClick_fav_delete={config.onClick_fav_delete}
+          setSelected={setSelected}
+        />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -310,6 +332,7 @@ export default function GenericTable(config: TableConfiguration) {
               rowCount={rows.length}
               type={config.type}
               headers={headers}
+              selectable={config.selectable}
             />
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
@@ -317,43 +340,49 @@ export default function GenericTable(config: TableConfiguration) {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name)
+                  const isItemSelected = isSelected(row.id)
                   const labelId = `enhanced-table-checkbox-${index}`
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      onClick={(event) => handleClick(event, row.id)}
                       role='checkbox'
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.name}
                       selected={isItemSelected}
                     >
-                      <TableCell padding='checkbox'>
-                        <Checkbox
-                          color='primary'
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId
-                          }}
-                        />
-                      </TableCell>
+                      {
+                        config.selectable ? (<TableCell padding='checkbox'>
+                            <Checkbox
+                              color='primary'
+                              checked={isItemSelected}
+                              inputProps={{
+                                'aria-labelledby': labelId
+                              }}
+                            />
+                          </TableCell>
+                        ) : null
+                      }
                       {
                         Object.getOwnPropertyNames(row).map((item) => {
+                          if (!fields.includes(item.toLowerCase())) {
+                            return []
+                          }
                           type ObjectKey = keyof typeof row;
                           const key = item as ObjectKey
                           if (item === 'my_rating') {
                             return <TableCell key={item}>
                               <Rating
                                 name='simple-controlled'
-                                value={Number(row[key])}
-                                precision={0.5}
+                                value={Number(row[key] ?? 0)}
+                                precision={1}
                                 onChange={(event, newValue) => {
-                                  // setValue(newValue);
-                                  console.log(newValue)
-                                  if (newValue != null) {
-                                    // value = newValue
+                                  if (newValue && config.onClick_rating) {
+                                    config.onClick_rating(row.id, newValue)
+                                  } else {
+                                    console.error('Rating new value is absent or handler is null')
                                   }
                                 }}
                               />
@@ -361,7 +390,7 @@ export default function GenericTable(config: TableConfiguration) {
                           } else if (item === 'rating') {
                             let val: number = Number(row[key])
                             return <TableCell key={item}>
-                              <Rating name='read-only' value={val} readOnly />
+                              <Rating name='read-only' precision={0.5} value={val} readOnly />
                             </TableCell>
                           }
 

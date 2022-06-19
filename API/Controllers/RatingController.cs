@@ -1,26 +1,12 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using API.Data;
 using System.Threading.Tasks;
 using API.Models;
 using API.Dtos;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
-using System.Text;
-using API.Models;
-using API.Repositories;
-using API.Token;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using API.Repositories;
-using API.Models;
-using API.Dtos;
-using API.Repositories;
+using System.Linq;
+using System.Security.Claims;
 using API.Repositories.Interfaces;
-using AutoMapper;
 
 namespace API.Controllers
 {
@@ -29,11 +15,13 @@ namespace API.Controllers
     public class RatingController : ControllerBase
     {
         private readonly IRatingRepository _ratingRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public RatingController(IRatingRepository ratingRepository, IMapper mapper)
+        public RatingController(IRatingRepository ratingRepository, IUserRepository userRepository, IMapper mapper)
         {
             _ratingRepository = ratingRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
         
@@ -51,6 +39,35 @@ namespace API.Controllers
             return Ok();
         }
         
+        [HttpPut]
+        public async Task<IActionResult> UpdateRating(CreateRatingDto ratingDto)
+        {
+            var user = await _userRepository.GetUserById(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            var userRate = await _ratingRepository.GetUsersRatingsById(user.Id);
+            var rate = userRate.FirstOrDefault(r => r.PlaceId == ratingDto.PlaceId);
+            if (rate is null)
+            {
+                await AddRate(ratingDto);
+                return Ok();
+            }
+            rate.Rate = ratingDto.Rate;
+            rate.PlaceId = ratingDto.PlaceId;
+            rate.AppUserId = ratingDto.AppUserId;
+            await _ratingRepository.Update(rate);
+            return Ok();
+        }
+
+        private async Task AddRate(CreateRatingDto ratingDto)
+        {
+            var rate = new Rating()
+            {
+                Rate = ratingDto.Rate,
+                PlaceId = ratingDto.PlaceId,
+                AppUserId = ratingDto.AppUserId
+            };
+            await _ratingRepository.Add(rate);
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetRating()
         {

@@ -8,13 +8,13 @@ import LoginForm from './LoginForm/LoginForm'
 import RegistrationForm from './RegistrationForm/RegistrationForm'
 import { Alert, Snackbar } from '@mui/material'
 import GenericTable from '../../Shared/Table/Table'
-import React, { useEffect, useState  } from 'react'
+import React, { useEffect, useState } from 'react'
 import PublicPlacesConfig, {
   PublicPlacesData,
   PublicPlacesHeadCells
 } from '../../Shared/Table/configs/PublicPlacesTableConfig'
 import TableType from '../../Shared/Table/TableType'
-import PlacesConfig, { PlacesHeadCells } from '../../Shared/Table/configs/PlacesTableConfig'
+import PlacesConfig, { PlacesData, PlacesHeadCells } from '../../Shared/Table/configs/PlacesTableConfig'
 import FavouritesConfig, { FavouritesHeadCells } from '../../Shared/Table/configs/FavouritesTableConfig'
 import RatingConfig, { RatingHeadCells } from '../../Shared/Table/configs/RatingsTableConfig'
 import axios from 'axios'
@@ -48,115 +48,51 @@ function Homepage() {
 
   const [apiData, setApiData] = useState([])
 
-  const fetchData = () => {
+  const fetchPublicPlaces = () => {
     axios.get('https://localhost:5001/api/Places')
       .then((response) => {
         console.log(response.data)
-        setApiData(response.data)
+        let structuredResponse: any = response.data.map((place: any) => {
+            let meanRating = NaN
+            if (place.ratings && place.ratings.length > 0) {
+              let reducer = (total: any, currentValue: any) => {
+                return total.rate + currentValue.rate
+              }
+              meanRating = place.ratings.length === 1
+                ? place.ratings[0].rate :
+                place.ratings.reduce(reducer) / place.ratings.length
+            }
+            console.log(response.data)
+            let tmp: PublicPlacesData = {
+              id: place.placeId,
+              name: place.name,
+              country: place.country,
+              city: place.city,
+              loc: place.location,
+              category: place.category,
+              rating: meanRating
+            }
+            return tmp
+          }
+        )
+        setApiData(structuredResponse)
+      })
+      .catch(err => {
+        console.error(err)
       })
   }
 
+  console.log(apiData)
+
   useEffect(() => {
-    fetchData()
+    fetchPublicPlaces()
   }, [])
 
   let config1: PublicPlacesConfig = {
     type: TableType.PublicPlaces,
     publicPlacesHeads: PublicPlacesHeadCells,
-    data: apiData
-      // [
-    //   {
-    //     name: 'kurde',
-    //     country: 'no',
-    //     city: 'dzialaj',
-    //     loc: 'dzis',
-    //     category: 'pls',
-    //     rating: 5
-    //   },
-    //   {
-    //     name: 'kurde1',
-    //     country: 'no1',
-    //     city: 'dzialaj1',
-    //     loc: 'dzis1',
-    //     category: 'pls1',
-    //     rating: 1
-    //   }
-    // ]
-  }
-
-  let config2: PlacesConfig = {
-    type: TableType.Places,
-    placesHeads: PlacesHeadCells,
-    data: [
-      {
-        name: 'rat 3 myrat 4',
-        country: 'country',
-        city: 'city',
-        loc: 'location',
-        category: 'cat',
-        rating: 3,
-        my_rating: 4
-      },
-      {
-        name: 'rat 1 myrat 2',
-        country: 'no1',
-        city: 'dzialaj1',
-        loc: 'dzis1',
-        category: 'pls1',
-        rating: 1,
-        my_rating: 2
-      }
-    ]
-  }
-
-  let config3: FavouritesConfig = {
-    type: TableType.Favourites,
-    favouritesHeads: FavouritesHeadCells,
-    data: [
-      {
-        name: 'name FAVS',
-        country: 'country',
-        city: 'city',
-        loc: 'location',
-        category: 'cat',
-        rating: 5,
-        my_rating: 3.5
-      },
-      {
-        name: 'kurde1',
-        country: 'no1',
-        city: 'dzialaj1',
-        loc: 'dzis1',
-        category: 'pls1',
-        rating: 3,
-        my_rating: 4.5
-      }
-    ]
-  }
-
-  let config4: RatingConfig = {
-    type: TableType.Ratings,
-    ratingHeads: RatingHeadCells,
-    data: [
-      {
-        name: 'name ratings',
-        country: 'country',
-        city: 'city',
-        loc: 'location',
-        category: 'cat',
-        rating: 1,
-        my_rating: 1.5
-      },
-      {
-        name: 'kurde1',
-        country: 'no1',
-        city: 'dzialaj1',
-        loc: 'dzis1',
-        category: 'pls1',
-        rating: 2.5,
-        my_rating: 0.5
-      }
-    ]
+    data: apiData,
+    selectable: false,
   }
 
   return (

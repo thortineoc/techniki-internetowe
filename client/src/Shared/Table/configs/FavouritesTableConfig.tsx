@@ -41,7 +41,7 @@ export const FavouritesHeadCells: readonly FavouritesHeader[] = [
     id: 'rating',
     numeric: false,
     disablePadding: true,
-    label: 'rating'
+    label: 'Rating'
   },
   {
     id: 'my_rating',

@@ -91,6 +91,17 @@ namespace API.Data
                     Location = "Planty",
                     Name = "Planty",
                     Ratings = null
+                },
+                new()
+                {
+                    PlaceId = 3,
+                    AppUserId = 1,
+                    Category = "Park",
+                    City = "Krakow",
+                    Country = "Poland",
+                    Location = "Planty",
+                    Name = "user_FAV",
+                    Ratings = null
                 }
             };
             foreach (var place in places)
@@ -142,6 +153,12 @@ namespace API.Data
                 {
                     FavouriteId = 1,
                     PlaceId = 1,
+                    UserId = 1
+                },
+                new()
+                {
+                    FavouriteId = 2,
+                    PlaceId = 3,
                     UserId = 1
                 }
             };
