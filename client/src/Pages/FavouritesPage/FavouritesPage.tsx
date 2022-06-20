@@ -8,10 +8,15 @@ import FavouritesConfig, {
 } from '../../Shared/Table/configs/FavouritesTableConfig'
 import { useSelector } from 'react-redux'
 import Footer from '../../Shared/Footer/Footer'
+import FilterDropdown from '../../Shared/FilterDropdown/FilterDropdown'
+import { PlacesData } from '../../Shared/Table/configs/PlacesTableConfig'
+import SearchBar from '../../Shared/SearchBar/SearchBar'
 
 function FavouritesPage() {
-  const [apiData, setApiData] = useState([])
+  const [apiData, setApiData] = useState<PlacesData[]>([])
   const { user } = useSelector((state: any) => state.userReducer)
+  const [initialData, setInitialData] = useState<PlacesData[]>([])
+
   const fetchFavourites = () => {
     axios
       .get('https://localhost:5001/api/Favourite/' + user.id)
@@ -48,6 +53,7 @@ function FavouritesPage() {
           }
         })
         setApiData(structuredResponse)
+        setInitialData(structuredResponse)
         console.log(structuredResponse)
       })
       .catch((err) => {
@@ -94,10 +100,76 @@ function FavouritesPage() {
     onClick_fav_delete: deleteFavouriteHandler
   }
 
+  const [searchTerm, setSearchTerm] = useState('')
+  const [categoryFilter, setCategoryFilter] = useState('')
+  const [countryFilter, setCountryFilter] = useState('')
+  const [cityFilter, setCityFilter] = useState('')
+  const [locationFilter, setLocationFilter] = useState('')
+
+  useEffect(() => {
+    config.data = initialData
+      .filter((val: any) => {
+        if (searchTerm === '' || searchTerm == null) {
+          return val
+        } else if (val.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+          return val
+        }
+      })
+      .filter((val: any) => {
+        if (categoryFilter === '' || categoryFilter == null) {
+          return val
+        } else if (
+          val.category.toLowerCase().includes(categoryFilter.toLowerCase())
+        ) {
+          return val
+        }
+      })
+      .filter((val: any) => {
+        if (countryFilter === '' || countryFilter == null) {
+          return val
+        } else if (
+          val.country.toLowerCase().includes(countryFilter.toLowerCase())
+        ) {
+          return val
+        }
+      })
+      .filter((val: any) => {
+        if (cityFilter === '' || cityFilter == null) {
+          return val
+        } else if (val.city.toLowerCase().includes(cityFilter.toLowerCase())) {
+          return val
+        }
+      })
+      .filter((val: any) => {
+        if (locationFilter === '' || locationFilter == null) {
+          return val
+        } else if (
+          val.loc.toLowerCase().includes(locationFilter.toLowerCase())
+        ) {
+          return val
+        }
+      })
+
+    setApiData(config.data)
+  }, [searchTerm, categoryFilter, countryFilter, cityFilter, locationFilter])
+
   return (
     <div className="FavouritesPage">
       <div className="FavouritesPage-top-row">
         <h1>My favourites places 💖</h1>
+        <div className="table-controls">
+          <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <FilterDropdown
+            setCategoryFilter={setCategoryFilter}
+            setCountryFilter={setCountryFilter}
+            setCityFilter={setCityFilter}
+            setLocationFilter={setLocationFilter}
+            categoryFilter={categoryFilter}
+            countryFilter={countryFilter}
+            cityFilter={cityFilter}
+            locationFilter={locationFilter}
+          />
+        </div>
       </div>
       <GenericTable {...config} />
       <Footer />
