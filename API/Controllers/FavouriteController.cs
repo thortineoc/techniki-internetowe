@@ -9,6 +9,7 @@ using api.Dtos;
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace API.Controllers
 {
@@ -21,19 +22,21 @@ namespace API.Controllers
         private readonly IPlaceRepository _placeRepository;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<FavouriteController> _logger;
 
-        public FavouriteController(IFavouriteRepository favouritesRepository, IPlaceRepository placeRepository, IUserRepository userRepository, IMapper mapper)
+        public FavouriteController(IFavouriteRepository favouritesRepository, IPlaceRepository placeRepository,
+            IUserRepository userRepository, ILogger<FavouriteController> logger, IMapper mapper)
         {
             _favouritesRepository = favouritesRepository;
             _placeRepository = placeRepository;
             _userRepository = userRepository;
+            _logger = logger;
             _mapper = mapper;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateFavourite(UpdateFavouriteDto favDto)
         {
-
             Favourite fav = new()
             {
                 PlaceId = favDto.PlaceId,
@@ -47,23 +50,28 @@ namespace API.Controllers
         public async Task<ActionResult<IList<FavouriteDto>>> GetFavourites()
         {
             var favs = await _favouritesRepository.GetAll();
-            var user = await _userRepository.GetUserById(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-            var favsDtos = favs.Select(f => new FavouriteDto()
+            var favsDtos = favs.Select(f =>
             {
-                Id = f.FavouriteId,
-                Place = _placeRepository.GetPlaceById(f.PlaceId).Result,
-                User = new AppUserDto()
+                var favUser = _userRepository.GetUserById(f.UserId).Result;
+                return new FavouriteDto()
                 {
-                    Id = user.Id,
-                    UserName = user.UserName,
-                    Email = user.Email
-                }
+                    Id = f.FavouriteId,
+                    Place = _placeRepository.GetPlaceById(f.PlaceId).Result,
+                    User = new AppUserDto()
+                    {
+                        Id = favUser.Id,
+                        UserName = favUser.UserName,
+                        Email = favUser.Email
+                    }
+                };
             }).ToList();
+
             IList<FavouriteDto> dtoList = new List<FavouriteDto>();
             foreach (var t in favsDtos)
             {
                 dtoList.Add(t);
             }
+
             return Ok(dtoList);
         }
 
@@ -75,6 +83,7 @@ namespace API.Controllers
             {
                 return NotFound();
             }
+
             var favsDtoList = new List<FavouriteDto>();
             foreach (var f in favs)
             {
@@ -92,22 +101,38 @@ namespace API.Controllers
                     Place = place
                 });
             }
+
             return Ok(favsDtoList);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFavourite(int id, UpdateFavouriteDto favDto)
+        [HttpPut]
+        public async Task<IActionResult> PutFavourite(UpdateFavouriteDto favDto)
         {
-            Favourite favs = new()
+            var user = await _userRepository.GetUserById(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            if (user.Id != favDto.UserId)
             {
-                FavouriteId = id,
+                return Unauthorized("UserId mismatch");
+            }
+
+            var fav = (await _favouritesRepository.GetUserFavouritesById(user.Id))
+                .FirstOrDefault(f => f.PlaceId == favDto.PlaceId);
+
+            if (fav != null)
+            {
+                _logger.LogInformation("Updating favourite");
+                await _favouritesRepository.Update(fav);
+                return Ok();
+            }
+
+            _logger.LogInformation("Creating new favourite");
+            Favourite newFav = new()
+            {
                 PlaceId = favDto.PlaceId,
                 UserId = favDto.UserId
             };
 
-            await _favouritesRepository.Update(favs);
+            await _favouritesRepository.Add(newFav);
             return Ok();
-
         }
 
         [HttpDelete("{id}")]

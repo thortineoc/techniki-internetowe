@@ -283,6 +283,9 @@ export default function GenericTable(config: TableConfiguration) {
   }
 
   const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
+    if (!config.selectable){
+      return
+    }
     const selectedIndex = selected.indexOf(id)
     let newSelected: readonly number[] = []
 
