@@ -115,17 +115,28 @@ function AllPlacesPage() {
       })
   }
 
+  let rateHandler = function ratePlace(id: number, value: number): void {
+    console.log("rating place: " + id + " with: " + value)
+    axios
+      .put('https://localhost:5001/api/Rating', {
+        AppUserId: user.id,
+        PlaceId: id,
+        Rate: value
+      })
+      .then((response) => {
+        fetchPublicPlaces()
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
   useEffect(() => {
     fetchUserFavsIds()
   }, [])
 
   useEffect(() => {
-    // console.log("Use effect")
-    // if (favsReady) {
-    //   console.log("Fetching places")
     fetchPublicPlaces()
-    // } else {
-    //}
   }, [userFavs])
 
 
@@ -133,7 +144,8 @@ function AllPlacesPage() {
     type: TableType.Places,
     placesHeads: PlacesHeadCells,
     data: apiData,
-    selectable: false
+    selectable: false,
+    onClick_rating: rateHandler,
   }
 
   return (
