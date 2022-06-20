@@ -14,7 +14,8 @@ import { FilterList, Search } from '@material-ui/icons'
 
 function AllPlacesPage() {
   const { user } = useSelector((state: any) => state.userReducer)
-  const [apiData, setApiData] = useState([])
+  const [apiData, setApiData] = useState<PlacesData[]>([])
+  const [initialData, setInitialData] = useState<PlacesData[]>([])
 
   const fetchPublicPlaces = () => {
     axios
@@ -59,6 +60,7 @@ function AllPlacesPage() {
           return tmp
         })
         setApiData(structuredResponse)
+        setInitialData(structuredResponse)
       })
       .catch((err) => {
         console.error(err)
@@ -77,6 +79,19 @@ function AllPlacesPage() {
   }
 
   const [searchTerm, setSearchTerm] = useState('')
+
+  useEffect(() => {
+    config.data = initialData.filter((val: any) => {
+      if (searchTerm === '' || searchTerm == null) {
+        return val
+      } else if (val.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+        return val
+      }
+    })
+    console.log('EEEEEEEEE')
+    console.log(config.data)
+    setApiData(config.data)
+  }, [searchTerm])
 
   return (
     <div className="AllPlacesPage">
@@ -99,7 +114,7 @@ function AllPlacesPage() {
             }}
           />
         </div>
-        <IconButton aria-label="delete" className="filter-icon">
+        <IconButton aria-label="filter" className="filter-icon">
           <FilterList />
         </IconButton>
       </div>

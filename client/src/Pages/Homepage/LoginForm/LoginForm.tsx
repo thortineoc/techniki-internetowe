@@ -47,7 +47,7 @@ function LoginForm(): ReactElement {
           console.log(response)
           login(response.data)
           setLoginModal(false)
-          navigate('/favourites')
+          navigate('/all')
           setupAxiosToken(response.data.token)
         }, 200)
       })
