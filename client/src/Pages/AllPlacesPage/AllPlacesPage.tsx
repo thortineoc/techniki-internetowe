@@ -207,6 +207,7 @@ function AllPlacesPage() {
               label="Category"
               name="category"
               onChange={(event: any) => setCategoryFilter(event.target.value)}
+              value={categoryFilter}
             />
           </div>
           <div className="list-item">
@@ -217,6 +218,7 @@ function AllPlacesPage() {
               label="Country"
               name="country"
               onChange={(event: any) => setCountryFilter(event.target.value)}
+              value={countryFilter}
             />
           </div>
           <div className="list-item">
@@ -227,6 +229,7 @@ function AllPlacesPage() {
               label="City"
               name="city"
               onChange={(event: any) => setCityFilter(event.target.value)}
+              value={cityFilter}
             />
           </div>
           <div className="list-item">
@@ -237,6 +240,7 @@ function AllPlacesPage() {
               label="Location"
               name="location"
               onChange={(event: any) => setLocationFilter(event.target.value)}
+              value={locationFilter}
             />
           </div>
         </Menu>
