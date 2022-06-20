@@ -398,8 +398,9 @@ export default function GenericTable(config: TableConfiguration) {
                                 value={Number(row[key] ?? 0)}
                                 precision={1}
                                 onChange={(event, newValue) => {
+                                  console.log(row)
                                   if (newValue && config.onClick_rating) {
-                                    config.onClick_rating(row.id, newValue)
+                                    config.onClick_rating(row.placeId, newValue)
                                   } else {
                                     console.error(
                                       'Rating new value is absent or handler is null'

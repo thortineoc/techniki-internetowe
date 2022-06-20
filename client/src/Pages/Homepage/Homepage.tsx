@@ -66,6 +66,7 @@ function Homepage() {
           console.log(response.data)
           let tmp: PublicPlacesData = {
             id: place.placeId,
+            placeId: place.placeId,
             name: place.name,
             country: place.country,
             city: place.city,

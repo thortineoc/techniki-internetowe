@@ -5,5 +5,6 @@ export default interface TableDataBase {
   city: string,
   loc: string,
   category: string,
-  rating: number
+  rating: number,
+  placeId: number
 }

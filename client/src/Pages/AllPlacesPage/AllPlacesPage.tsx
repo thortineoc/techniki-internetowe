@@ -65,6 +65,7 @@ function AllPlacesPage() {
 
             let tmp: PlacesData = {
               id: place.placeId,
+              placeId: place.placeId,
               name: place.name,
               country: place.country,
               city: place.city,
@@ -84,6 +85,7 @@ function AllPlacesPage() {
           })
           let tmp: PlacesData = {
             id: place.placeId,
+            placeId: place.placeId,
             name: place.name,
             country: place.country,
             city: place.city,
