@@ -146,6 +146,13 @@ function AllPlacesPage() {
     setAnchorEl(null)
   }
 
+  const clearFilter = () => {
+    setCategoryFilter('')
+    setCountryFilter('')
+    setCityFilter('')
+    setLocationFilter('')
+  }
+
   return (
     <div className="AllPlacesPage">
       <div className="AllPlacesPage-top-row">
@@ -193,8 +200,8 @@ function AllPlacesPage() {
           PaperProps={{
             style: {
               width: '270px',
-              height: '300px',
-              padding: '10px',
+              height: '312px',
+              padding: '10px 10px 0 10px',
               boxShadow:
                 'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px'
             }
@@ -242,6 +249,9 @@ function AllPlacesPage() {
               onChange={(event: any) => setLocationFilter(event.target.value)}
               value={locationFilter}
             />
+          </div>
+          <div className="list-item">
+            <Button onClick={() => clearFilter()}>Clear</Button>
           </div>
         </Menu>
       </div>
