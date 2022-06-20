@@ -43,13 +43,11 @@ function LoginForm(): ReactElement {
     axios
       .post('https://localhost:5001/api/account/login', values)
       .then(function (response) {
-        setTimeout(() => {
-          console.log(response)
-          login(response.data)
-          setLoginModal(false)
-          navigate('/all')
-          setupAxiosToken(response.data.token)
-        }, 200)
+        console.log(response)
+        login(response.data)
+        setLoginModal(false)
+        navigate('/all')
+        setupAxiosToken(response.data.token)
       })
       .catch(function (error) {
         setStatus({ success: false })

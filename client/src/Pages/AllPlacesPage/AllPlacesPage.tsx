@@ -17,6 +17,8 @@ import {
 } from '@mui/material'
 import Footer from '../../Shared/Footer/Footer'
 import { FilterList, Search } from '@material-ui/icons'
+import FilterDropdown from '../../Shared/FilterDropdown/FilterDropdown'
+import SearchBar from '../../Shared/SearchBar/SearchBar'
 
 function AllPlacesPage() {
   const { user } = useSelector((state: any) => state.userReducer)
@@ -137,123 +139,23 @@ function AllPlacesPage() {
     setApiData(config.data)
   }, [searchTerm, categoryFilter, countryFilter, cityFilter, locationFilter])
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
-
-  const clearFilter = () => {
-    setCategoryFilter('')
-    setCountryFilter('')
-    setCityFilter('')
-    setLocationFilter('')
-  }
-
   return (
     <div className="AllPlacesPage">
       <div className="AllPlacesPage-top-row">
         <h1>All places 🚀</h1>
-        <div className="search-bars-container">
-          <TextField
-            placeholder="Search by name..."
-            style={{ backgroundColor: 'white', borderRadius: 3, width: '30vw' }}
-            sx={{ width: 250 }}
-            size="small"
-            label="Title"
-            onChange={(event: any) => setSearchTerm(event.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Search />
-                </InputAdornment>
-              )
-            }}
+        <div className="table-controls">
+          <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <FilterDropdown
+            setCategoryFilter={setCategoryFilter}
+            setCountryFilter={setCountryFilter}
+            setCityFilter={setCityFilter}
+            setLocationFilter={setLocationFilter}
+            categoryFilter={categoryFilter}
+            countryFilter={countryFilter}
+            cityFilter={cityFilter}
+            locationFilter={locationFilter}
           />
         </div>
-        <IconButton
-          aria-label="filter"
-          className="filter-icon"
-          onClick={handleClick}>
-          <FilterList />
-        </IconButton>
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorEl}
-          elevation={0}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right'
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right'
-          }}
-          open={open}
-          onClose={handleClose}
-          MenuListProps={{
-            'aria-labelledby': 'basic-button'
-          }}
-          PaperProps={{
-            style: {
-              width: '270px',
-              height: '312px',
-              padding: '10px 10px 0 10px',
-              boxShadow:
-                'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px'
-            }
-          }}>
-          <div className="list-item">
-            <TextField
-              placeholder="Search by category..."
-              sx={{ width: 250 }}
-              size="small"
-              label="Category"
-              name="category"
-              onChange={(event: any) => setCategoryFilter(event.target.value)}
-              value={categoryFilter}
-            />
-          </div>
-          <div className="list-item">
-            <TextField
-              placeholder="Search by country..."
-              sx={{ width: 250 }}
-              size="small"
-              label="Country"
-              name="country"
-              onChange={(event: any) => setCountryFilter(event.target.value)}
-              value={countryFilter}
-            />
-          </div>
-          <div className="list-item">
-            <TextField
-              placeholder="Search by city..."
-              sx={{ width: 250 }}
-              size="small"
-              label="City"
-              name="city"
-              onChange={(event: any) => setCityFilter(event.target.value)}
-              value={cityFilter}
-            />
-          </div>
-          <div className="list-item">
-            <TextField
-              placeholder="Search by location..."
-              sx={{ width: 250 }}
-              size="small"
-              label="Location"
-              name="location"
-              onChange={(event: any) => setLocationFilter(event.target.value)}
-              value={locationFilter}
-            />
-          </div>
-          <div className="list-item">
-            <Button onClick={() => clearFilter()}>Clear</Button>
-          </div>
-        </Menu>
       </div>
       <GenericTable {...config} />
       <Footer />
