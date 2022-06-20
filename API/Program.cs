@@ -26,10 +26,10 @@ namespace API
                 var userManager = services.GetRequiredService<UserManager<AppUser>>();
                 await Seed.SeedRoles(roleManager);
                 await Seed.SeedUser(userManager);
+                await context.Database.MigrateAsync();
                 await Seed.SeedPlaces(context);
                 await Seed.SeedRatings(context);
                 await Seed.SeedFavourites(context);
-                await context.Database.MigrateAsync();
             }
             catch (Exception ex)
             {

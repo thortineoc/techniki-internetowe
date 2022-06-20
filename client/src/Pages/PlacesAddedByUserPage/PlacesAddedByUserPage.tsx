@@ -52,6 +52,7 @@ function PlacesAddedByUserPage() {
             console.log(place)
             return {
               id: place.placeId,
+              placeId: place.placeId,
               name: place.name,
               country: place.country,
               city: place.city,
