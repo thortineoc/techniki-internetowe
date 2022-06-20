@@ -242,12 +242,10 @@ export default function GenericTable(config: TableConfiguration) {
     let tmp = config as PublicPlacesConfig
     data = tmp.data
     headers = tmp.publicPlacesHeads
-    console.log('Public places')
   } else if (config.type === TableType.Places) {
     let tmp = config as PlacesConfig
     data = tmp.data
     headers = tmp.placesHeads
-    console.log('Public places')
   } else if (config.type === TableType.Favourites) {
     let tmp = config as FavouritesConfig
     data = tmp.data
