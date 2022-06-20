@@ -11,11 +11,15 @@ import axios from 'axios'
 import GenericTable from '../../Shared/Table/Table'
 import { useSelector } from 'react-redux'
 import Footer from '../../Shared/Footer/Footer'
+import SearchBar from '../../Shared/SearchBar/SearchBar'
+import FilterDropdown from '../../Shared/FilterDropdown/FilterDropdown'
+import { PlacesData } from '../../Shared/Table/configs/PlacesTableConfig'
 
 function PlacesAddedByUserPage() {
   const { user } = useSelector((state: any) => state.userReducer)
-  const [apiData, setApiData] = useState([])
+  const [apiData, setApiData] = useState<PlacesData[]>([])
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [initialData, setInitialData] = useState<PlacesData[]>([])
 
   useEffect(() => {
     if (!isOpen) {
@@ -62,6 +66,7 @@ function PlacesAddedByUserPage() {
             }
           })
         setApiData(structuredResponse)
+        setInitialData(structuredResponse)
         console.log(structuredResponse)
       })
       .catch((err) => {
@@ -105,20 +110,87 @@ function PlacesAddedByUserPage() {
 
   console.log(apiData)
 
+  const [searchTerm, setSearchTerm] = useState('')
+  const [categoryFilter, setCategoryFilter] = useState('')
+  const [countryFilter, setCountryFilter] = useState('')
+  const [cityFilter, setCityFilter] = useState('')
+  const [locationFilter, setLocationFilter] = useState('')
+
+  useEffect(() => {
+    config.data = initialData
+      .filter((val: any) => {
+        if (searchTerm === '' || searchTerm == null) {
+          return val
+        } else if (val.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+          return val
+        }
+      })
+      .filter((val: any) => {
+        if (categoryFilter === '' || categoryFilter == null) {
+          return val
+        } else if (
+          val.category.toLowerCase().includes(categoryFilter.toLowerCase())
+        ) {
+          return val
+        }
+      })
+      .filter((val: any) => {
+        if (countryFilter === '' || countryFilter == null) {
+          return val
+        } else if (
+          val.country.toLowerCase().includes(countryFilter.toLowerCase())
+        ) {
+          return val
+        }
+      })
+      .filter((val: any) => {
+        if (cityFilter === '' || cityFilter == null) {
+          return val
+        } else if (val.city.toLowerCase().includes(cityFilter.toLowerCase())) {
+          return val
+        }
+      })
+      .filter((val: any) => {
+        if (locationFilter === '' || locationFilter == null) {
+          return val
+        } else if (
+          val.loc.toLowerCase().includes(locationFilter.toLowerCase())
+        ) {
+          return val
+        }
+      })
+
+    setApiData(config.data)
+  }, [searchTerm, categoryFilter, countryFilter, cityFilter, locationFilter])
+
   return (
     <div className="PlacesAddedByUserPage">
       <div className="PlacesAddedByUserPage-top-row">
         <div className="PlacesAddedByUserPage-top-left-block">
           <h1>Places added by me 💁</h1>
         </div>
-        <Button
-          color="primary"
-          variant="contained"
-          size="medium"
-          className="PlacesAddedByUserPage-btn"
-          onClick={() => setIsOpen(true)}>
-          Add a new place
-        </Button>
+        <div className="table-controls">
+          <Button
+            color="primary"
+            variant="contained"
+            size="medium"
+            className="PlacesAddedByUserPage-btn"
+            onClick={() => setIsOpen(true)}>
+            Add a new place
+          </Button>
+
+          <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <FilterDropdown
+            setCategoryFilter={setCategoryFilter}
+            setCountryFilter={setCountryFilter}
+            setCityFilter={setCityFilter}
+            setLocationFilter={setLocationFilter}
+            categoryFilter={categoryFilter}
+            countryFilter={countryFilter}
+            cityFilter={cityFilter}
+            locationFilter={locationFilter}
+          />
+        </div>
       </div>
       <GenericTable {...config} />
       <Footer />

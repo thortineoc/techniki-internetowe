@@ -29,13 +29,34 @@ export default function FilterDropdown({
     setLocationFilter('')
   }
 
+  const isFilterSet = (): boolean => {
+    console.log(countryFilter)
+    console.log(countryFilter != '')
+    console.log(
+      countryFilter != '' ||
+        locationFilter != '' ||
+        cityFilter != '' ||
+        categoryFilter != ''
+    )
+    return (
+      countryFilter != '' ||
+      locationFilter != '' ||
+      cityFilter != '' ||
+      categoryFilter != ''
+    )
+  }
+
   return (
     <>
       <IconButton
         aria-label="filter"
         className="filter-icon"
         onClick={handleClick}>
-        <FilterList />
+        <FilterList
+          className={
+            isFilterSet() ? 'filter-icon-active' : 'filter-icon-inactive'
+          }
+        />
       </IconButton>
       <Menu
         id="basic-menu"

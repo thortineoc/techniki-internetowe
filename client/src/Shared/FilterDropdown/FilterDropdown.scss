@@ -5,11 +5,10 @@
   justify-content: center;
 }
 
-.filter-icon {
-  width: 50px;
-  height: 50px;
+.filter-icon-active {
+  color: greenyellow;
+}
+
+.filter-icon-inactive {
   color: white;
-  padding: 25px;
-  margin: 20px;
-  background-color: gray;
 }
