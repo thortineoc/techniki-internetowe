@@ -8,7 +8,13 @@ import PlacesConfig, {
   PlacesHeadCells
 } from '../../Shared/Table/configs/PlacesTableConfig'
 import { useSelector } from 'react-redux'
-import { Button, IconButton, InputAdornment, TextField } from '@mui/material'
+import {
+  Button,
+  IconButton,
+  InputAdornment,
+  Menu,
+  TextField
+} from '@mui/material'
 import Footer from '../../Shared/Footer/Footer'
 import { FilterList, Search } from '@material-ui/icons'
 
@@ -79,19 +85,38 @@ function AllPlacesPage() {
   }
 
   const [searchTerm, setSearchTerm] = useState('')
+  const [categoryFilter, setCategoryFilter] = useState('')
 
   useEffect(() => {
-    config.data = initialData.filter((val: any) => {
-      if (searchTerm === '' || searchTerm == null) {
-        return val
-      } else if (val.name.toLowerCase().includes(searchTerm.toLowerCase())) {
-        return val
-      }
-    })
-    console.log('EEEEEEEEE')
-    console.log(config.data)
+    config.data = initialData
+      .filter((val: any) => {
+        if (searchTerm === '' || searchTerm == null) {
+          return val
+        } else if (val.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+          return val
+        }
+      })
+      .filter((val: any) => {
+        if (categoryFilter === '' || categoryFilter == null) {
+          return val
+        } else if (
+          val.category.toLowerCase().includes(categoryFilter.toLowerCase())
+        ) {
+          return val
+        }
+      })
+
     setApiData(config.data)
-  }, [searchTerm])
+  }, [searchTerm, categoryFilter])
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
 
   return (
     <div className="AllPlacesPage">
@@ -114,9 +139,52 @@ function AllPlacesPage() {
             }}
           />
         </div>
-        <IconButton aria-label="filter" className="filter-icon">
+        <IconButton
+          aria-label="filter"
+          className="filter-icon"
+          onClick={handleClick}>
           <FilterList />
         </IconButton>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          elevation={0}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right'
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right'
+          }}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button'
+          }}
+          PaperProps={{
+            style: {
+              width: '400px',
+              height: '300px',
+              padding: '10px',
+              boxShadow:
+                'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px'
+            }
+          }}>
+          <div className="list-item">
+            <TextField
+              placeholder="Search by category..."
+              sx={{ width: 250 }}
+              size="small"
+              label="Category"
+              onChange={(event: any) => setCategoryFilter(event.target.value)}
+              value={categoryFilter}
+            />
+          </div>
+          <div className="list-item">Country: </div>
+          <div className="list-item">City: </div>
+          <div className="list-item">Location: </div>
+        </Menu>
       </div>
       <GenericTable {...config} />
       <Footer />
