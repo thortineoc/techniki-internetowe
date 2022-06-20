@@ -86,6 +86,9 @@ function AllPlacesPage() {
 
   const [searchTerm, setSearchTerm] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('')
+  const [countryFilter, setCountryFilter] = useState('')
+  const [cityFilter, setCityFilter] = useState('')
+  const [locationFilter, setLocationFilter] = useState('')
 
   useEffect(() => {
     config.data = initialData
@@ -105,9 +108,34 @@ function AllPlacesPage() {
           return val
         }
       })
+      .filter((val: any) => {
+        if (countryFilter === '' || countryFilter == null) {
+          return val
+        } else if (
+          val.country.toLowerCase().includes(countryFilter.toLowerCase())
+        ) {
+          return val
+        }
+      })
+      .filter((val: any) => {
+        if (cityFilter === '' || cityFilter == null) {
+          return val
+        } else if (val.city.toLowerCase().includes(cityFilter.toLowerCase())) {
+          return val
+        }
+      })
+      .filter((val: any) => {
+        if (locationFilter === '' || locationFilter == null) {
+          return val
+        } else if (
+          val.loc.toLowerCase().includes(locationFilter.toLowerCase())
+        ) {
+          return val
+        }
+      })
 
     setApiData(config.data)
-  }, [searchTerm, categoryFilter])
+  }, [searchTerm, categoryFilter, countryFilter, cityFilter, locationFilter])
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -164,7 +192,7 @@ function AllPlacesPage() {
           }}
           PaperProps={{
             style: {
-              width: '400px',
+              width: '270px',
               height: '300px',
               padding: '10px',
               boxShadow:
@@ -177,13 +205,40 @@ function AllPlacesPage() {
               sx={{ width: 250 }}
               size="small"
               label="Category"
+              name="category"
               onChange={(event: any) => setCategoryFilter(event.target.value)}
-              value={categoryFilter}
             />
           </div>
-          <div className="list-item">Country: </div>
-          <div className="list-item">City: </div>
-          <div className="list-item">Location: </div>
+          <div className="list-item">
+            <TextField
+              placeholder="Search by country..."
+              sx={{ width: 250 }}
+              size="small"
+              label="Country"
+              name="country"
+              onChange={(event: any) => setCountryFilter(event.target.value)}
+            />
+          </div>
+          <div className="list-item">
+            <TextField
+              placeholder="Search by city..."
+              sx={{ width: 250 }}
+              size="small"
+              label="City"
+              name="city"
+              onChange={(event: any) => setCityFilter(event.target.value)}
+            />
+          </div>
+          <div className="list-item">
+            <TextField
+              placeholder="Search by location..."
+              sx={{ width: 250 }}
+              size="small"
+              label="Location"
+              name="location"
+              onChange={(event: any) => setLocationFilter(event.target.value)}
+            />
+          </div>
         </Menu>
       </div>
       <GenericTable {...config} />
