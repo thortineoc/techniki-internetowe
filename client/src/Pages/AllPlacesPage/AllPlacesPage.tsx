@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import './AllPlacesPage.scss'
 import axios from 'axios'
 import TableType from '../../Shared/Table/TableType'
@@ -10,6 +10,23 @@ import { Button } from '@mui/material'
 function AllPlacesPage() {
   const { user } = useSelector((state: any) => state.userReducer)
   const [apiData, setApiData] = useState([])
+  const [userFavs, setUserFavs] = useState([])
+
+  let favsReady: boolean = false
+
+  const addToFavourites = (placeId: number): void => {
+    console.log('Adding to favourites placeId: ' + placeId)
+    axios.put('https://localhost:5001/api/Favourite/', {
+      UserId: user.id,
+      PlaceId: placeId
+    }).then((response) => {
+      console.log(response)
+      console.log('Added to favourites')
+    })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
   const fetchPublicPlaces = () => {
     axios.get('https://localhost:5001/api/Places')
@@ -31,6 +48,16 @@ function AllPlacesPage() {
                 my_rate = rate.rate
               }
             })
+
+            let button: ReactElement<any, any>
+            if (userFavs.filter(i => i === place.placeId).length) {
+              button = <Button>Remove button</Button>
+            } else {
+              button = <Button onClick={() => {
+                addToFavourites(place.placeId)
+              }}>Add to favourites</Button>
+            }
+
             let tmp: PlacesData = {
               id: place.placeId,
               name: place.name,
@@ -40,7 +67,7 @@ function AllPlacesPage() {
               category: place.category,
               rating: meanRating,
               my_rating: my_rate,
-              actions: [<Button onClick={() => {console.log("hello place id: " + place.placeId)}}>Add to favourites</Button>,],
+              actions: [button]
             }
             return tmp
           }
@@ -52,15 +79,36 @@ function AllPlacesPage() {
       })
   }
 
+  let fetchUserFavsIds = () => {
+    axios.get('https://localhost:5001/api/Favourite/' + user.id)
+      .then((response) => {
+        let userFavs = response.data.map((fav: any) => fav.place.placeId)
+        console.log(userFavs)
+        setUserFavs(userFavs)
+        console.log("Setting favs ready")
+        favsReady = true
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
   useEffect(() => {
-    fetchPublicPlaces()
-  }, [])
+    // console.log("Use effect")
+    // if (favsReady) {
+    //   console.log("Fetching places")
+       fetchPublicPlaces()
+    // } else {
+      console.log("Fetching user favs")
+//      fetchUserFavsIds()
+    //}
+  }, [favsReady])
 
   let config: PlacesConfig = {
     type: TableType.Places,
     placesHeads: PlacesHeadCells,
     data: apiData,
-    selectable: false,
+    selectable: false
   }
   return <div className='AllPlacesPage'>All places here
     <GenericTable {...config} />
