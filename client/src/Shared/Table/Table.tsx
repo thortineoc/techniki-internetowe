@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './Table.scss'
 
 import { alpha } from '@mui/material/styles'
@@ -236,6 +236,19 @@ export default function GenericTable(config: TableConfiguration) {
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(5)
 
+  const [dataState, setDataState] = useState([])
+
+  useEffect(() => {
+    console.log(config)
+    console.log('TABLEEE')
+    setDataState(config.data)
+  }, [config])
+
+  useEffect(() => {
+    console.log('daneeee')
+    console.log(dataState)
+  }, [dataState])
+
   let data: Array<TableDataBase>
   let headers
   if (config.type === TableType.PublicPlaces) {
@@ -275,7 +288,7 @@ export default function GenericTable(config: TableConfiguration) {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.id)
+      const newSelecteds = rows.map((n: any) => n.id)
       setSelected(newSelecteds)
       return
     }

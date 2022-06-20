@@ -8,12 +8,22 @@ import PlacesConfig, {
   PlacesHeadCells
 } from '../../Shared/Table/configs/PlacesTableConfig'
 import { useSelector } from 'react-redux'
-import { Button } from '@mui/material'
+import {
+  Button,
+  IconButton,
+  InputAdornment,
+  Menu,
+  TextField
+} from '@mui/material'
 import Footer from '../../Shared/Footer/Footer'
+import { FilterList, Search } from '@material-ui/icons'
+import FilterDropdown from '../../Shared/FilterDropdown/FilterDropdown'
+import SearchBar from '../../Shared/SearchBar/SearchBar'
 
 function AllPlacesPage() {
   const { user } = useSelector((state: any) => state.userReducer)
-  const [apiData, setApiData] = useState([])
+  const [apiData, setApiData] = useState<PlacesData[]>([])
+  const [initialData, setInitialData] = useState<PlacesData[]>([])
 
   const fetchPublicPlaces = () => {
     axios
@@ -58,6 +68,7 @@ function AllPlacesPage() {
           return tmp
         })
         setApiData(structuredResponse)
+        setInitialData(structuredResponse)
       })
       .catch((err) => {
         console.error(err)
@@ -75,10 +86,76 @@ function AllPlacesPage() {
     selectable: false
   }
 
+  const [searchTerm, setSearchTerm] = useState('')
+  const [categoryFilter, setCategoryFilter] = useState('')
+  const [countryFilter, setCountryFilter] = useState('')
+  const [cityFilter, setCityFilter] = useState('')
+  const [locationFilter, setLocationFilter] = useState('')
+
+  useEffect(() => {
+    config.data = initialData
+      .filter((val: any) => {
+        if (searchTerm === '' || searchTerm == null) {
+          return val
+        } else if (val.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+          return val
+        }
+      })
+      .filter((val: any) => {
+        if (categoryFilter === '' || categoryFilter == null) {
+          return val
+        } else if (
+          val.category.toLowerCase().includes(categoryFilter.toLowerCase())
+        ) {
+          return val
+        }
+      })
+      .filter((val: any) => {
+        if (countryFilter === '' || countryFilter == null) {
+          return val
+        } else if (
+          val.country.toLowerCase().includes(countryFilter.toLowerCase())
+        ) {
+          return val
+        }
+      })
+      .filter((val: any) => {
+        if (cityFilter === '' || cityFilter == null) {
+          return val
+        } else if (val.city.toLowerCase().includes(cityFilter.toLowerCase())) {
+          return val
+        }
+      })
+      .filter((val: any) => {
+        if (locationFilter === '' || locationFilter == null) {
+          return val
+        } else if (
+          val.loc.toLowerCase().includes(locationFilter.toLowerCase())
+        ) {
+          return val
+        }
+      })
+
+    setApiData(config.data)
+  }, [searchTerm, categoryFilter, countryFilter, cityFilter, locationFilter])
+
   return (
     <div className="AllPlacesPage">
       <div className="AllPlacesPage-top-row">
         <h1>All places 🚀</h1>
+        <div className="table-controls">
+          <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <FilterDropdown
+            setCategoryFilter={setCategoryFilter}
+            setCountryFilter={setCountryFilter}
+            setCityFilter={setCityFilter}
+            setLocationFilter={setLocationFilter}
+            categoryFilter={categoryFilter}
+            countryFilter={countryFilter}
+            cityFilter={cityFilter}
+            locationFilter={locationFilter}
+          />
+        </div>
       </div>
       <GenericTable {...config} />
       <Footer />
