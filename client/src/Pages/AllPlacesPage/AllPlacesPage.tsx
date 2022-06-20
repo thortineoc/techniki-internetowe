@@ -8,8 +8,9 @@ import PlacesConfig, {
   PlacesHeadCells
 } from '../../Shared/Table/configs/PlacesTableConfig'
 import { useSelector } from 'react-redux'
-import { Button } from '@mui/material'
+import { Button, IconButton, InputAdornment, TextField } from '@mui/material'
 import Footer from '../../Shared/Footer/Footer'
+import { FilterList, Search } from '@material-ui/icons'
 
 function AllPlacesPage() {
   const { user } = useSelector((state: any) => state.userReducer)
@@ -75,10 +76,32 @@ function AllPlacesPage() {
     selectable: false
   }
 
+  const [searchTerm, setSearchTerm] = useState('')
+
   return (
     <div className="AllPlacesPage">
       <div className="AllPlacesPage-top-row">
         <h1>All places 🚀</h1>
+        <div className="search-bars-container">
+          <TextField
+            placeholder="Search by name..."
+            style={{ backgroundColor: 'white', borderRadius: 3, width: '30vw' }}
+            sx={{ width: 250 }}
+            size="small"
+            label="Title"
+            onChange={(event: any) => setSearchTerm(event.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Search />
+                </InputAdornment>
+              )
+            }}
+          />
+        </div>
+        <IconButton aria-label="delete" className="filter-icon">
+          <FilterList />
+        </IconButton>
       </div>
       <GenericTable {...config} />
       <Footer />
