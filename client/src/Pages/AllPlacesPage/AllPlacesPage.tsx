@@ -43,12 +43,10 @@ function AllPlacesPage() {
             let reducer = (total: any, currentValue: any) => {
               return total.rate + currentValue.rate
             }
-<<<<<<< HEAD
             meanRating =
               place.ratings.length === 1
                 ? place.ratings[0].rate
                 : place.ratings.reduce(reducer) / place.ratings.length
-=======
             let my_rate = NaN
             place.ratings.forEach((rate: any) => {
               if (rate.appUserId === user.id) {
@@ -77,7 +75,6 @@ function AllPlacesPage() {
               actions: [button]
             }
             return tmp
->>>>>>> P-14_table
           }
           let my_rate = NaN
           place.ratings.forEach((rate: any) => {
