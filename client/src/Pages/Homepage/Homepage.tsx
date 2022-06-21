@@ -53,7 +53,7 @@ function Homepage() {
       .then((response) => {
         console.log(response.data)
         let structuredResponse: any = response.data.map((place: any) => {
-          let meanRating = NaN
+          let meanRating = 0
           if (place.ratings && place.ratings.length > 0) {
             let reducer = (total: any, currentValue: any) => {
               return total.rate + currentValue.rate

@@ -22,7 +22,7 @@ function FavouritesPage() {
       .get('https://localhost:5001/api/Favourite/' + user.id)
       .then((response) => {
         let structuredResponse: any = response.data.map((userPlace: any) => {
-          let meanRating = NaN
+          let meanRating = 0
           if (userPlace.place.ratings && userPlace.place.ratings.length > 0) {
             let reducer = (total: any, currentValue: any) => {
               return total.rate + currentValue.rate

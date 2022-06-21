@@ -19,6 +19,8 @@ import Footer from '../../Shared/Footer/Footer'
 import { FilterList, Search } from '@material-ui/icons'
 import FilterDropdown from '../../Shared/FilterDropdown/FilterDropdown'
 import SearchBar from '../../Shared/SearchBar/SearchBar'
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import HeartBrokenIcon from '@mui/icons-material/HeartBroken';
 
 function AllPlacesPage() {
   const { user } = useSelector((state: any) => state.userReducer)
@@ -62,21 +64,21 @@ function AllPlacesPage() {
           let fav: any = userFavs.find((fav: any) => fav.place.placeId === place.placeId)
           if (fav && fav.id) {
             if (fav.id) {
-              button = <Button onClick={() => {
+              button = <HeartBrokenIcon onClick={() => {
                 console.log('Removing from favs')
                 removeFromFavourites(fav.id)
-              }}>Remove from favourites</Button>
+              }}>Remove from favourites</HeartBrokenIcon>
             } else {
               console.error('fav without id')
             }
           } else {
-            button = <Button onClick={() => {
+            button = <FavoriteIcon onClick={() => {
               console.log('Adding to favs')
               addToFavourites(place.placeId)
-            }}>Add to favourites</Button>
+            }}>Add to favourites</FavoriteIcon>
           }
 
-          let meanRating = NaN
+          let meanRating = 0
           if (place.ratings && place.ratings.length > 0) {
             let reducer = (total: any, currentValue: any) => {
               return total.rate + currentValue.rate
@@ -86,7 +88,7 @@ function AllPlacesPage() {
                 ? place.ratings[0].rate
                 : place.ratings.reduce(reducer) / place.ratings.length
           }
-          let my_rate = NaN
+          let my_rate = 0
           place.ratings.forEach((rate: any) => {
             if (rate.appUserId === user.id) {
               my_rate = rate.rate

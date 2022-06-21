@@ -37,7 +37,7 @@ function PlacesAddedByUserPage() {
             return place.appUserId === user.id
           })
           .map((place: any) => {
-            let meanRating = NaN
+            let meanRating = 0
             if (place.ratings && place.ratings.length > 0) {
               let reducer = (total: any, currentValue: any) => {
                 return total.rate + currentValue.rate
