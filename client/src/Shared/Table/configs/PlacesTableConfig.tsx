@@ -51,6 +51,12 @@ export const PlacesHeadCells: readonly PlacesHeader[] = [
     label: 'My rating'
   },
   {
+    id: 'added_by',
+    numeric: false,
+    disablePadding: true,
+    label: 'Added by'
+  },
+  {
     id: 'actions',
     numeric: false,
     disablePadding: true,
@@ -60,6 +66,7 @@ export const PlacesHeadCells: readonly PlacesHeader[] = [
 
 export interface PlacesData extends TableDataBase {
   my_rating: number
+  added_by: string
   actions?: Array<ReactElement<any, any>>
 }
 

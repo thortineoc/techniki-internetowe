@@ -11,7 +11,9 @@ export default function FilterDropdown({
   categoryFilter,
   countryFilter,
   cityFilter,
-  locationFilter
+  locationFilter,
+  setUserFilter,
+  userFilter
 }: any) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -27,6 +29,7 @@ export default function FilterDropdown({
     setCountryFilter('')
     setCityFilter('')
     setLocationFilter('')
+    setUserFilter('')
   }
 
   const isFilterSet = (): boolean => {
@@ -36,13 +39,15 @@ export default function FilterDropdown({
       countryFilter != '' ||
         locationFilter != '' ||
         cityFilter != '' ||
-        categoryFilter != ''
+        categoryFilter != '' ||
+        userFilter != ''
     )
     return (
       countryFilter != '' ||
       locationFilter != '' ||
       cityFilter != '' ||
-      categoryFilter != ''
+      categoryFilter != '' ||
+      userFilter != ''
     )
   }
 
@@ -78,7 +83,7 @@ export default function FilterDropdown({
         PaperProps={{
           style: {
             width: '270px',
-            height: '312px',
+            height: '372px',
             padding: '10px 10px 0 10px',
             boxShadow:
               'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px'
@@ -128,6 +133,21 @@ export default function FilterDropdown({
             value={locationFilter}
           />
         </div>
+        {setUserFilter ? (
+          <div className="list-item">
+            <TextField
+              placeholder="Search by user..."
+              sx={{ width: 250 }}
+              size="small"
+              label="User"
+              name="User"
+              onChange={(event: any) => setUserFilter(event.target.value)}
+              value={userFilter}
+            />
+          </div>
+        ) : (
+          []
+        )}
         <div className="list-item">
           <Button onClick={() => clearFilter()}>Clear</Button>
         </div>

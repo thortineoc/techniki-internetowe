@@ -4,6 +4,7 @@ import { Button } from '@material-ui/core'
 import Modal from '../../Shared/Modal/Modal'
 import AddNewPlaceForm from './AddNewPlaceForm/AddNewPlaceForm'
 import FavouritesConfig, {
+  FavouritesData,
   FavouritesHeadCells
 } from '../../Shared/Table/configs/FavouritesTableConfig'
 import TableType from '../../Shared/Table/TableType'
@@ -17,9 +18,9 @@ import { PlacesData } from '../../Shared/Table/configs/PlacesTableConfig'
 
 function PlacesAddedByUserPage() {
   const { user } = useSelector((state: any) => state.userReducer)
-  const [apiData, setApiData] = useState<PlacesData[]>([])
+  const [apiData, setApiData] = useState<FavouritesData[]>([])
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const [initialData, setInitialData] = useState<PlacesData[]>([])
+  const [initialData, setInitialData] = useState<FavouritesData[]>([])
 
   useEffect(() => {
     if (!isOpen) {

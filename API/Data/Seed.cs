@@ -106,18 +106,6 @@ namespace API.Data
                 ,
                 new()
                 {
-                    PlaceId = 3,
-                    AppUserId = 1,
-                    Category = "Park",
-                    City = "Krakow",
-                    Country = "Poland",
-                    Location = "Planty",
-                    Name = "user_FAV",
-                    Ratings = null
-                }
-                ,
-                new()
-                {
                     PlaceId = 4,
                     AppUserId = 1,
                     Category = "Park",
@@ -179,6 +167,18 @@ namespace API.Data
                 new()
                 {
                     PlaceId = 9,
+                    AppUserId = 1,
+                    Category = "Park",
+                    City = "Krakow",
+                    Country = "Poland",
+                    Location = "Planty",
+                    Name = "user_FAV",
+                    Ratings = null
+                }
+                ,
+                new()
+                {
+                    PlaceId = 10,
                     AppUserId = 1,
                     Category = "Park",
                     City = "Krakow",
