@@ -11,7 +11,9 @@ export default function FilterDropdown({
   categoryFilter,
   countryFilter,
   cityFilter,
-  locationFilter
+  locationFilter,
+  setUserFilter,
+  userFilter
 }: any) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -27,6 +29,7 @@ export default function FilterDropdown({
     setCountryFilter('')
     setCityFilter('')
     setLocationFilter('')
+    setUserFilter('')
   }
 
   const isFilterSet = (): boolean => {
@@ -36,13 +39,15 @@ export default function FilterDropdown({
       countryFilter != '' ||
         locationFilter != '' ||
         cityFilter != '' ||
-        categoryFilter != ''
+        categoryFilter != '' ||
+        userFilter != ''
     )
     return (
       countryFilter != '' ||
       locationFilter != '' ||
       cityFilter != '' ||
-      categoryFilter != ''
+      categoryFilter != '' ||
+      userFilter != ''
     )
   }
 
@@ -128,6 +133,20 @@ export default function FilterDropdown({
             value={locationFilter}
           />
         </div>
+        {
+          setUserFilter ?
+          <div className="list-item">
+            <TextField
+              placeholder="Search by user..."
+              sx={{ width: 250 }}
+              size="small"
+              label="User"
+              name="User"
+              onChange={(event: any) => setUserFilter(event.target.value)}
+              value={userFilter}
+            />
+          </div> : []
+        }
         <div className="list-item">
           <Button onClick={() => clearFilter()}>Clear</Button>
         </div>

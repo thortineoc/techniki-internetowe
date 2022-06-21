@@ -27,6 +27,7 @@ function AllPlacesPage() {
   const [apiData, setApiData] = useState<PlacesData[]>([])
   const [initialData, setInitialData] = useState<PlacesData[]>([])
   const [userFavs, setUserFavs] = useState([])
+  const [allUsers, setAllUsers] = useState([])
 
   const addToFavourites = (placeId: number): void => {
     axios.put('https://localhost:5001/api/Favourite/', {
@@ -94,6 +95,12 @@ function AllPlacesPage() {
               my_rate = rate.rate
             }
           })
+          let userObj: any = allUsers.find((u: any) => u.id === place.appUserId)
+          let userName = ''
+          if (user && userObj.name) {
+            userName = userObj.name
+          }
+          console.log(userName)
           let tmp: PlacesData = {
             id: place.placeId,
             placeId: place.placeId,
@@ -104,6 +111,7 @@ function AllPlacesPage() {
             category: place.category,
             rating: meanRating,
             my_rating: my_rate,
+            added_by: userName,
             actions: [button]
           }
           return tmp
@@ -127,6 +135,22 @@ function AllPlacesPage() {
         console.error(err)
       })
   }
+  let fetchAllUsers = () => {
+    axios.get('https://localhost:5001/api/Users/')
+      .then((response) => {
+        let users = response.data.map((u: any) => {
+          return {
+            id: u.id,
+            name: u.userName
+          }
+        })
+        setAllUsers(users)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
 
   let rateHandler = function ratePlace(id: number, value: number): void {
     console.log("rating place: " + id + " with: " + value)
@@ -144,9 +168,13 @@ function AllPlacesPage() {
       })
   }
 
+  useEffect(()=> {
+    fetchAllUsers()
+  }, [])
+
   useEffect(() => {
     fetchUserFavs()
-  }, [])
+  }, [allUsers])
 
   useEffect(() => {
     fetchPublicPlaces()
@@ -166,6 +194,7 @@ function AllPlacesPage() {
   const [countryFilter, setCountryFilter] = useState('')
   const [cityFilter, setCityFilter] = useState('')
   const [locationFilter, setLocationFilter] = useState('')
+  const [userFilter, setUserFilter] = useState('')
 
   useEffect(() => {
     config.data = initialData
@@ -210,9 +239,18 @@ function AllPlacesPage() {
           return val
         }
       })
+      .filter((val: any) => {
+        if (userFilter === '' || userFilter == null) {
+          return val
+        } else if (
+          val.added_by.toLowerCase().includes(userFilter.toLowerCase())
+        ) {
+          return val
+        }
+      })
 
     setApiData(config.data)
-  }, [searchTerm, categoryFilter, countryFilter, cityFilter, locationFilter])
+  }, [searchTerm, categoryFilter, countryFilter, cityFilter, locationFilter, userFilter])
 
   return (
     <div className='AllPlacesPage'>
@@ -225,6 +263,7 @@ function AllPlacesPage() {
             setCountryFilter={setCountryFilter}
             setCityFilter={setCityFilter}
             setLocationFilter={setLocationFilter}
+            setUserFilter={setUserFilter}
             categoryFilter={categoryFilter}
             countryFilter={countryFilter}
             cityFilter={cityFilter}

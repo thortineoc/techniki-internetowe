@@ -4,6 +4,7 @@ import axios from 'axios'
 import GenericTable from '../../Shared/Table/Table'
 import TableType from '../../Shared/Table/TableType'
 import FavouritesConfig, {
+  FavouritesData,
   FavouritesHeadCells
 } from '../../Shared/Table/configs/FavouritesTableConfig'
 import { useSelector } from 'react-redux'
@@ -13,9 +14,9 @@ import { PlacesData } from '../../Shared/Table/configs/PlacesTableConfig'
 import SearchBar from '../../Shared/SearchBar/SearchBar'
 
 function FavouritesPage() {
-  const [apiData, setApiData] = useState<PlacesData[]>([])
+  const [apiData, setApiData] = useState<FavouritesData[]>([])
   const { user } = useSelector((state: any) => state.userReducer)
-  const [initialData, setInitialData] = useState<PlacesData[]>([])
+  const [initialData, setInitialData] = useState<FavouritesData[]>([])
 
   const fetchFavourites = () => {
     axios

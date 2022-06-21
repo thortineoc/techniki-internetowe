@@ -341,6 +341,7 @@ export default function GenericTable(config: TableConfiguration) {
     'category',
     'rating',
     'my_rating',
+    'added_by',
     'actions'
   ]
 
