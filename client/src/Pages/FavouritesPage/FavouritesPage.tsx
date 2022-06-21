@@ -25,14 +25,8 @@ function FavouritesPage() {
         let structuredResponse: any = response.data.map((userPlace: any) => {
           let meanRating = 0
           if (userPlace.place.ratings && userPlace.place.ratings.length > 0) {
-            let reducer = (total: any, currentValue: any) => {
-              return total.rate + currentValue.rate
-            }
-            meanRating =
-              userPlace.place.ratings.length === 1
-                ? userPlace.place.ratings[0].rate
-                : userPlace.place.ratings.reduce(reducer) /
-                  userPlace.place.ratings.length
+            userPlace.place.ratings.forEach((el:any) => meanRating += el.rate)
+            meanRating = meanRating/userPlace.place.ratings.length
           }
           let my_rate = null
           userPlace.place.ratings.forEach((rate: any) => {

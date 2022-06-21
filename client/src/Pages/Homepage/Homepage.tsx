@@ -55,13 +55,8 @@ function Homepage() {
         let structuredResponse: any = response.data.map((place: any) => {
           let meanRating = 0
           if (place.ratings && place.ratings.length > 0) {
-            let reducer = (total: any, currentValue: any) => {
-              return total.rate + currentValue.rate
-            }
-            meanRating =
-              place.ratings.length === 1
-                ? place.ratings[0].rate
-                : place.ratings.reduce(reducer) / place.ratings.length
+            place.ratings.forEach((el:any) => meanRating += el.rate)
+            meanRating = meanRating/place.ratings.length
           }
           console.log(response.data)
           let tmp: PublicPlacesData = {
@@ -76,6 +71,9 @@ function Homepage() {
           }
           return tmp
         })
+        structuredResponse = structuredResponse.sort((o1: any, o2: any) => {
+          return o1.rating < o2.rating
+        }).slice(0, 10)
         setApiData(structuredResponse)
       })
       .catch((err) => {
@@ -100,20 +98,20 @@ function Homepage() {
 
   return (
     <div>
-      <div className="homepage">
-        <div className="homepage-textbox">
-          <h1 className="homepage-title">Polecajka</h1>
+      <div className='homepage'>
+        <div className='homepage-textbox'>
+          <h1 className='homepage-title'>Polecajka</h1>
           <div>
             Welcome to Polecajka app. You can find your favourite places 🗺️,
             save them 📍 and rate ⭐. You can also add new spots so others may
             check them out. Look across many available locations 🥡💈🏀.
           </div>
         </div>
-        <div className="top-ten-btn-wrapper">
+        <div className='top-ten-btn-wrapper'>
           <Button
-            color="primary"
-            variant="contained"
-            className="top-ten-btn"
+            color='primary'
+            variant='contained'
+            className='top-ten-btn'
             onClick={() =>
               firstItemRef &&
               firstItemRef.current &&
@@ -126,7 +124,7 @@ function Homepage() {
             See our top 10 places
           </Button>
         </div>
-        <div ref={firstItemRef} className="table-wrapper">
+        <div ref={firstItemRef} className='table-wrapper'>
           <GenericTable {...config1} />
         </div>
         <Footer />
@@ -144,7 +142,7 @@ function Homepage() {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
         <Alert
           onClose={handleCloseFormError}
-          severity="error"
+          severity='error'
           sx={{ width: '100%' }}>
           {formError}
         </Alert>
@@ -156,7 +154,7 @@ function Homepage() {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
         <Alert
           onClose={handleCloseFormSuccess}
-          severity="success"
+          severity='success'
           sx={{ width: '100%' }}>
           {formSuccess}
         </Alert>

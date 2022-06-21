@@ -98,12 +98,12 @@ function AllPlacesPage() {
           let meanRating = 0
           if (place.ratings && place.ratings.length > 0) {
             let reducer = (total: any, currentValue: any) => {
+              console.log(total)
+              console.log(currentValue)
               return total.rate + currentValue.rate
             }
-            meanRating =
-              place.ratings.length === 1
-                ? place.ratings[0].rate
-                : place.ratings.reduce(reducer) / place.ratings.length
+            place.ratings.forEach((el:any) => meanRating += el.rate)
+            meanRating = meanRating/place.ratings.length
           }
           let my_rate = 0
           place.ratings.forEach((rate: any) => {
