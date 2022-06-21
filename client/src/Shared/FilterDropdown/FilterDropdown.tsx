@@ -83,7 +83,7 @@ export default function FilterDropdown({
         PaperProps={{
           style: {
             width: '270px',
-            height: '312px',
+            height: '372px',
             padding: '10px 10px 0 10px',
             boxShadow:
               'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px'
@@ -133,8 +133,7 @@ export default function FilterDropdown({
             value={locationFilter}
           />
         </div>
-        {
-          setUserFilter ?
+        {setUserFilter ? (
           <div className="list-item">
             <TextField
               placeholder="Search by user..."
@@ -145,8 +144,10 @@ export default function FilterDropdown({
               onChange={(event: any) => setUserFilter(event.target.value)}
               value={userFilter}
             />
-          </div> : []
-        }
+          </div>
+        ) : (
+          []
+        )}
         <div className="list-item">
           <Button onClick={() => clearFilter()}>Clear</Button>
         </div>

@@ -16,11 +16,11 @@ import {
   TextField
 } from '@mui/material'
 import Footer from '../../Shared/Footer/Footer'
-import { FilterList, Search } from '@material-ui/icons'
+import { FavoriteBorder, FilterList, Search } from '@material-ui/icons'
 import FilterDropdown from '../../Shared/FilterDropdown/FilterDropdown'
 import SearchBar from '../../Shared/SearchBar/SearchBar'
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import HeartBrokenIcon from '@mui/icons-material/HeartBroken';
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import HeartBrokenIcon from '@mui/icons-material/HeartBroken'
 
 function AllPlacesPage() {
   const { user } = useSelector((state: any) => state.userReducer)
@@ -30,14 +30,16 @@ function AllPlacesPage() {
   const [allUsers, setAllUsers] = useState([])
 
   const addToFavourites = (placeId: number): void => {
-    axios.put('https://localhost:5001/api/Favourite/', {
-      UserId: user.id,
-      PlaceId: placeId
-    }).then((response) => {
-      console.log(response)
-      console.log('Added to favourites')
-      fetchUserFavs()
-    })
+    axios
+      .put('https://localhost:5001/api/Favourite/', {
+        UserId: user.id,
+        PlaceId: placeId
+      })
+      .then((response) => {
+        console.log(response)
+        console.log('Added to favourites')
+        fetchUserFavs()
+      })
       .catch((err) => {
         console.log(err)
       })
@@ -62,21 +64,35 @@ function AllPlacesPage() {
         console.log(response.data)
         let structuredResponse: any = response.data.map((place: any) => {
           let button: ReactElement<any, any> = <Button>eror</Button>
-          let fav: any = userFavs.find((fav: any) => fav.place.placeId === place.placeId)
+          let fav: any = userFavs.find(
+            (fav: any) => fav.place.placeId === place.placeId
+          )
           if (fav && fav.id) {
             if (fav.id) {
-              button = <HeartBrokenIcon onClick={() => {
-                console.log('Removing from favs')
-                removeFromFavourites(fav.id)
-              }}>Remove from favourites</HeartBrokenIcon>
+              button = (
+                <FavoriteIcon
+                  style={{ color: 'red', cursor: 'pointer' }}
+                  onClick={() => {
+                    console.log('Removing from favs')
+                    removeFromFavourites(fav.id)
+                  }}>
+                  Remove from favourites
+                </FavoriteIcon>
+              )
             } else {
               console.error('fav without id')
             }
           } else {
-            button = <FavoriteIcon onClick={() => {
-              console.log('Adding to favs')
-              addToFavourites(place.placeId)
-            }}>Add to favourites</FavoriteIcon>
+            button = (
+              <FavoriteBorder
+                style={{ color: 'red', cursor: 'pointer' }}
+                onClick={() => {
+                  console.log('Adding to favs')
+                  addToFavourites(place.placeId)
+                }}>
+                Add to favourites
+              </FavoriteBorder>
+            )
           }
 
           let meanRating = 0
@@ -125,7 +141,8 @@ function AllPlacesPage() {
   }
 
   let fetchUserFavs = () => {
-    axios.get('https://localhost:5001/api/Favourite/' + user.id)
+    axios
+      .get('https://localhost:5001/api/Favourite/' + user.id)
       .then((response) => {
         let userFavs = response.data
         console.log(userFavs)
@@ -136,7 +153,8 @@ function AllPlacesPage() {
       })
   }
   let fetchAllUsers = () => {
-    axios.get('https://localhost:5001/api/Users/')
+    axios
+      .get('https://localhost:5001/api/Users/')
       .then((response) => {
         let users = response.data.map((u: any) => {
           return {
@@ -151,9 +169,8 @@ function AllPlacesPage() {
       })
   }
 
-
   let rateHandler = function ratePlace(id: number, value: number): void {
-    console.log("rating place: " + id + " with: " + value)
+    console.log('rating place: ' + id + ' with: ' + value)
     axios
       .put('https://localhost:5001/api/Rating', {
         AppUserId: user.id,
@@ -168,7 +185,7 @@ function AllPlacesPage() {
       })
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     fetchAllUsers()
   }, [])
 
@@ -180,13 +197,12 @@ function AllPlacesPage() {
     fetchPublicPlaces()
   }, [userFavs])
 
-
   let config: PlacesConfig = {
     type: TableType.Places,
     placesHeads: PlacesHeadCells,
     data: apiData,
     selectable: false,
-    onClick_rating: rateHandler,
+    onClick_rating: rateHandler
   }
 
   const [searchTerm, setSearchTerm] = useState('')
@@ -250,11 +266,18 @@ function AllPlacesPage() {
       })
 
     setApiData(config.data)
-  }, [searchTerm, categoryFilter, countryFilter, cityFilter, locationFilter, userFilter])
+  }, [
+    searchTerm,
+    categoryFilter,
+    countryFilter,
+    cityFilter,
+    locationFilter,
+    userFilter
+  ])
 
   return (
-    <div className='AllPlacesPage'>
-      <div className='AllPlacesPage-top-row'>
+    <div className="AllPlacesPage">
+      <div className="AllPlacesPage-top-row">
         <h1>All places 🚀</h1>
         <div className="table-controls">
           <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
