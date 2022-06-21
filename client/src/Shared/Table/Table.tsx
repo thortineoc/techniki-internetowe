@@ -239,15 +239,8 @@ export default function GenericTable(config: TableConfiguration) {
   const [dataState, setDataState] = useState([])
 
   useEffect(() => {
-    console.log(config)
-    console.log('TABLEEE')
     setDataState(config.data)
   }, [config])
-
-  useEffect(() => {
-    console.log('daneeee')
-    console.log(dataState)
-  }, [dataState])
 
   let data: Array<TableDataBase>
   let headers
@@ -294,7 +287,7 @@ export default function GenericTable(config: TableConfiguration) {
   }
 
   const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
-    if (!config.selectable){
+    if (!config.selectable) {
       return
     }
     const selectedIndex = selected.indexOf(id)
@@ -410,7 +403,6 @@ export default function GenericTable(config: TableConfiguration) {
                                 value={Number(row[key] ?? 0)}
                                 precision={1}
                                 onChange={(event, newValue) => {
-                                  console.log(row)
                                   if (newValue && config.onClick_rating) {
                                     config.onClick_rating(row.placeId, newValue)
                                   } else {

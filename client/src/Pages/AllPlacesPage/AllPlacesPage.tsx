@@ -8,19 +8,12 @@ import PlacesConfig, {
   PlacesHeadCells
 } from '../../Shared/Table/configs/PlacesTableConfig'
 import { useSelector } from 'react-redux'
-import {
-  Button,
-  IconButton,
-  InputAdornment,
-  Menu,
-  TextField
-} from '@mui/material'
+import { Button } from '@mui/material'
 import Footer from '../../Shared/Footer/Footer'
-import { FavoriteBorder, FilterList, Search } from '@material-ui/icons'
+import { FavoriteBorder } from '@material-ui/icons'
 import FilterDropdown from '../../Shared/FilterDropdown/FilterDropdown'
 import SearchBar from '../../Shared/SearchBar/SearchBar'
 import FavoriteIcon from '@mui/icons-material/Favorite'
-import HeartBrokenIcon from '@mui/icons-material/HeartBroken'
 
 function AllPlacesPage() {
   const { user } = useSelector((state: any) => state.userReducer)
@@ -36,8 +29,6 @@ function AllPlacesPage() {
         PlaceId: placeId
       })
       .then((response) => {
-        console.log(response)
-        console.log('Added to favourites')
         fetchUserFavs()
       })
       .catch((err) => {
@@ -61,7 +52,6 @@ function AllPlacesPage() {
     axios
       .get('https://localhost:5001/api/Places')
       .then((response) => {
-        console.log(response.data)
         let structuredResponse: any = response.data.map((place: any) => {
           let button: ReactElement<any, any> = <Button>eror</Button>
           let fav: any = userFavs.find(
@@ -73,7 +63,6 @@ function AllPlacesPage() {
                 <FavoriteIcon
                   style={{ color: 'red', cursor: 'pointer' }}
                   onClick={() => {
-                    console.log('Removing from favs')
                     removeFromFavourites(fav.id)
                   }}>
                   Remove from favourites
@@ -87,7 +76,6 @@ function AllPlacesPage() {
               <FavoriteBorder
                 style={{ color: 'red', cursor: 'pointer' }}
                 onClick={() => {
-                  console.log('Adding to favs')
                   addToFavourites(place.placeId)
                 }}>
                 Add to favourites
@@ -98,12 +86,10 @@ function AllPlacesPage() {
           let meanRating = 0
           if (place.ratings && place.ratings.length > 0) {
             let reducer = (total: any, currentValue: any) => {
-              console.log(total)
-              console.log(currentValue)
               return total.rate + currentValue.rate
             }
-            place.ratings.forEach((el:any) => meanRating += el.rate)
-            meanRating = meanRating/place.ratings.length
+            place.ratings.forEach((el: any) => (meanRating += el.rate))
+            meanRating = meanRating / place.ratings.length
           }
           let my_rate = 0
           place.ratings.forEach((rate: any) => {
@@ -116,7 +102,6 @@ function AllPlacesPage() {
           if (user && userObj.name) {
             userName = userObj.name
           }
-          console.log(userName)
           let tmp: PlacesData = {
             id: place.placeId,
             placeId: place.placeId,
@@ -145,7 +130,6 @@ function AllPlacesPage() {
       .get('https://localhost:5001/api/Favourite/' + user.id)
       .then((response) => {
         let userFavs = response.data
-        console.log(userFavs)
         setUserFavs(userFavs)
       })
       .catch((err) => {
@@ -170,7 +154,6 @@ function AllPlacesPage() {
   }
 
   let rateHandler = function ratePlace(id: number, value: number): void {
-    console.log('rating place: ' + id + ' with: ' + value)
     axios
       .put('https://localhost:5001/api/Rating', {
         AppUserId: user.id,
@@ -291,6 +274,7 @@ function AllPlacesPage() {
             countryFilter={countryFilter}
             cityFilter={cityFilter}
             locationFilter={locationFilter}
+            userFilter={userFilter}
           />
         </div>
       </div>

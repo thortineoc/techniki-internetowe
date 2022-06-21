@@ -33,21 +33,12 @@ export default function FilterDropdown({
   }
 
   const isFilterSet = (): boolean => {
-    console.log(countryFilter)
-    console.log(countryFilter != '')
-    console.log(
-      countryFilter != '' ||
-        locationFilter != '' ||
-        cityFilter != '' ||
-        categoryFilter != '' ||
-        userFilter != ''
-    )
     return (
       countryFilter != '' ||
       locationFilter != '' ||
       cityFilter != '' ||
       categoryFilter != '' ||
-      userFilter != ''
+      (userFilter != '' && userFilter != null)
     )
   }
 
@@ -83,7 +74,7 @@ export default function FilterDropdown({
         PaperProps={{
           style: {
             width: '270px',
-            height: '372px',
+            height: userFilter === '' ? '372px' : '320px',
             padding: '10px 10px 0 10px',
             boxShadow:
               'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px'

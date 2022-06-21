@@ -54,7 +54,6 @@ function AddNewPlaceForm({ setIsOpen }: any) {
     { resetForm, setStatus, setSubmitting }: any
   ) => {
     const req = { ...values, appUserId: user.id }
-    console.log(req)
     axios
       .post('https://localhost:5001/api/Places/', req)
       .then((response) => setIsOpen(false))

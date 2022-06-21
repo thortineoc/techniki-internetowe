@@ -54,7 +54,6 @@ function PlacesAddedByUserPage() {
                 my_rate = rate.rate
               }
             })
-            console.log(place)
             return {
               id: place.placeId,
               placeId: place.placeId,

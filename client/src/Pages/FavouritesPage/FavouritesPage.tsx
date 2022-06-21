@@ -25,8 +25,10 @@ function FavouritesPage() {
         let structuredResponse: any = response.data.map((userPlace: any) => {
           let meanRating = 0
           if (userPlace.place.ratings && userPlace.place.ratings.length > 0) {
-            userPlace.place.ratings.forEach((el:any) => meanRating += el.rate)
-            meanRating = meanRating/userPlace.place.ratings.length
+            userPlace.place.ratings.forEach(
+              (el: any) => (meanRating += el.rate)
+            )
+            meanRating = meanRating / userPlace.place.ratings.length
           }
           let my_rate = null
           userPlace.place.ratings.forEach((rate: any) => {
@@ -34,7 +36,6 @@ function FavouritesPage() {
               my_rate = rate.rate
             }
           })
-          console.log(response.data)
           return {
             placeId: userPlace.place.placeId,
             id: userPlace.id,
@@ -49,7 +50,6 @@ function FavouritesPage() {
         })
         setApiData(structuredResponse)
         setInitialData(structuredResponse)
-        console.log(structuredResponse)
       })
       .catch((err) => {
         console.error(err)
@@ -61,7 +61,6 @@ function FavouritesPage() {
   }, [])
 
   let rateHandler = function ratePlace(id: number, value: number): void {
-    console.log("rating place: " + id + " with: " + value)
     axios
       .put('https://localhost:5001/api/Rating', {
         AppUserId: user.id,
@@ -78,7 +77,6 @@ function FavouritesPage() {
 
   let deleteFavouriteHandler = function (id: readonly number[]): void {
     id.forEach((id) => {
-      console.log('Deleting fav with id: ' + id)
       axios
         .delete('https://localhost:5001/api/Favourite/' + id)
         .then(() => fetchFavourites())

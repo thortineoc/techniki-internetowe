@@ -38,8 +38,6 @@ function LoginForm(): ReactElement {
     values: ILoginFormFields,
     { resetForm, setStatus, setSubmitting }: any
   ) => {
-    console.log(resetForm)
-    console.log(JSON.stringify(values))
     axios
       .post('https://localhost:5001/api/account/login', values)
       .then(function (response) {
