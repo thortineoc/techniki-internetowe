@@ -54,7 +54,7 @@ export const PlacesHeadCells: readonly PlacesHeader[] = [
     id: 'actions',
     numeric: false,
     disablePadding: true,
-    label: 'Actions'
+    label: 'Favourite'
   }
 ]
 

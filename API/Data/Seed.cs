@@ -86,7 +86,7 @@ namespace API.Data
                     PlaceId = 2,
                     AppUserId = 1,
                     Category = "Park",
-                    City = "Krakow",
+                    City = "Jerozolima",
                     Country = "Poland",
                     Location = "Planty",
                     Name = "Planty",
@@ -95,6 +95,90 @@ namespace API.Data
                 new()
                 {
                     PlaceId = 3,
+                    AppUserId = 1,
+                    Category = "Park",
+                    City = "Adamów",
+                    Country = "Poland",
+                    Location = "Planty",
+                    Name = "user_FAV",
+                    Ratings = null
+                }
+                ,
+                new()
+                {
+                    PlaceId = 3,
+                    AppUserId = 1,
+                    Category = "Park",
+                    City = "Krakow",
+                    Country = "Poland",
+                    Location = "Planty",
+                    Name = "user_FAV",
+                    Ratings = null
+                }
+                ,
+                new()
+                {
+                    PlaceId = 4,
+                    AppUserId = 1,
+                    Category = "Park",
+                    City = "Krakow",
+                    Country = "Poland",
+                    Location = "Planty",
+                    Name = "user_FAV",
+                    Ratings = null
+                }
+                ,
+                new()
+                {
+                    PlaceId = 5,
+                    AppUserId = 1,
+                    Category = "Park",
+                    City = "Krakow",
+                    Country = "Poland",
+                    Location = "Planty",
+                    Name = "user_FAV",
+                    Ratings = null
+                }
+                ,
+                new()
+                {
+                    PlaceId = 6,
+                    AppUserId = 1,
+                    Category = "Park",
+                    City = "Krakow",
+                    Country = "Poland",
+                    Location = "Planty",
+                    Name = "user_FAV",
+                    Ratings = null
+                }
+                ,
+                new()
+                {
+                    PlaceId = 7,
+                    AppUserId = 1,
+                    Category = "Park",
+                    City = "Krakow",
+                    Country = "Poland",
+                    Location = "Planty",
+                    Name = "user_FAV",
+                    Ratings = null
+                }
+                ,
+                new()
+                {
+                    PlaceId = 8,
+                    AppUserId = 1,
+                    Category = "Park",
+                    City = "Krakow",
+                    Country = "Poland",
+                    Location = "Planty",
+                    Name = "user_FAV",
+                    Ratings = null
+                }
+                ,
+                new()
+                {
+                    PlaceId = 9,
                     AppUserId = 1,
                     Category = "Park",
                     City = "Krakow",

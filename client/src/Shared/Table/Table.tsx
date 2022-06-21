@@ -255,12 +255,10 @@ export default function GenericTable(config: TableConfiguration) {
     let tmp = config as PublicPlacesConfig
     data = tmp.data
     headers = tmp.publicPlacesHeads
-    console.log('Public places')
   } else if (config.type === TableType.Places) {
     let tmp = config as PlacesConfig
     data = tmp.data
     headers = tmp.placesHeads
-    console.log('Public places')
   } else if (config.type === TableType.Favourites) {
     let tmp = config as FavouritesConfig
     data = tmp.data
@@ -296,6 +294,9 @@ export default function GenericTable(config: TableConfiguration) {
   }
 
   const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
+    if (!config.selectable){
+      return
+    }
     const selectedIndex = selected.indexOf(id)
     let newSelected: readonly number[] = []
 
@@ -381,7 +382,7 @@ export default function GenericTable(config: TableConfiguration) {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.id}
                       selected={isItemSelected}>
                       {config.selectable ? (
                         <TableCell padding="checkbox">
@@ -408,8 +409,9 @@ export default function GenericTable(config: TableConfiguration) {
                                 value={Number(row[key] ?? 0)}
                                 precision={1}
                                 onChange={(event, newValue) => {
+                                  console.log(row)
                                   if (newValue && config.onClick_rating) {
-                                    config.onClick_rating(row.id, newValue)
+                                    config.onClick_rating(row.placeId, newValue)
                                   } else {
                                     console.error(
                                       'Rating new value is absent or handler is null'
