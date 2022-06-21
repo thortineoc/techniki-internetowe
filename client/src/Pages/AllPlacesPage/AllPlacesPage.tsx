@@ -24,6 +24,7 @@ function AllPlacesPage() {
   const { user } = useSelector((state: any) => state.userReducer)
   const [apiData, setApiData] = useState<PlacesData[]>([])
   const [initialData, setInitialData] = useState<PlacesData[]>([])
+  const [userFavs, setUserFavs] = useState([])
 
   const addToFavourites = (placeId: number): void => {
     axios.put('https://localhost:5001/api/Favourite/', {
@@ -32,7 +33,7 @@ function AllPlacesPage() {
     }).then((response) => {
       console.log(response)
       console.log('Added to favourites')
-      fetchUserFavsIds()
+      fetchUserFavs()
     })
       .catch((err) => {
         console.log(err)
@@ -44,7 +45,7 @@ function AllPlacesPage() {
     if (userFavs) {
       axios
         .delete('https://localhost:5001/api/Favourite/' + favId)
-        .then(() => fetchUserFavsIds())
+        .then(() => fetchUserFavs())
         .catch((err) => console.error(err))
     } else {
       console.error('userFavs not ready!')
@@ -113,7 +114,7 @@ function AllPlacesPage() {
       })
   }
 
-  let fetchUserFavsIds = () => {
+  let fetchUserFavs = () => {
     axios.get('https://localhost:5001/api/Favourite/' + user.id)
       .then((response) => {
         let userFavs = response.data
@@ -142,7 +143,7 @@ function AllPlacesPage() {
   }
 
   useEffect(() => {
-    fetchUserFavsIds()
+    fetchUserFavs()
   }, [])
 
   useEffect(() => {
